@@ -1,6 +1,6 @@
 <?php
 
-namespace MicroCMS\DAO;
+namespace Miniquiz\DAO;
 
 use Doctrine\DBAL\Connection;
 

@@ -1,19 +1,30 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
+    {% if error %}
+        <div class="row">
+            <div class="card hoverable red">
+                <div class="card-content">
+                    <p>
+                        <strong>L'authentification a échouée !</strong> {{ error }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col offset-l2 m8 s12 center">
             <div class="card hoverable">
                 <div class="card-content">
                     <span class="card-title">Connexion</span>
-                    <form>
+                    <form role="form" action="{{ path('login_check') }}" method="post">
                         <div class="input-field">
-                            <label for="pseudo">Pseudo</label>
-                            <input name="pseudo" type="text">
+                            <label for="username">Pseudo</label>
+                            <input id="username" name="_username" type="text" value="{{ last_username }}">
                         </div>
                         <div class="input-field">
                             <label for="password">Mot de passe</label>
-                            <input name="password" type="password">
+                            <input id="password" name="_password" type="password">
                         </div>
                         <div class="card-action">
                             <button type="reset" class="btn waves-effect light-effect">Effacez</button>
