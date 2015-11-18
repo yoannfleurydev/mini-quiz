@@ -14,14 +14,14 @@
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Mini-Quiz</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-                <a href="{{ app.request.basepath }}/" class="brand-logo">Mini-Quiz</a>
+                <a href="{{ path('home') }}" class="brand-logo">Mini-Quiz</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="{{ app.request.basepath }}/login">Connexion</a></li>
-                    <li><a href="{{ app.request.basepath }}/signup">Inscription</a></li>
+                    <li><a href="{{ path('login') }}">Connexion</a></li>
+                    <li><a href="{{ path('signup') }}">Inscription</a></li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
-                    <li><a href="{{ app.request.basepath }}/login">Connexion</a></li>
-                    <li><a href="{{ app.request.basepath }}/signup">Inscription</a></li>
+                    <li><a href="{{ path('login') }}">Connexion</a></li>
+                    <li><a href="{{ path('signup') }}">Inscription</a></li>
                 </ul>
             </div>
         </nav>
