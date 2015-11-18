@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: valentin
- * Date: 11/17/15
- * Time: 4:56 PM
- */
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
