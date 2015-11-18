@@ -14,11 +14,11 @@ class UserDAO extends DAO implements UserProviderInterface
      * Returns a user matching the supplied id.
      *
      * @param integer $id The user id.
-     *
-     * @return \Miniquiz\Domain\User|throws an exception if no matching user is found
+     * @return \Miniquiz\Domain\User return a user if matching user is found
+     * @throws \Exception throws an exception if no matching user is found
      */
     public function find($id) {
-        $sql = "select * from user where user_id=?";
+        $sql = "SELECT * FROM user WHERE user_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
