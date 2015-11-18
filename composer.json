@@ -5,6 +5,6 @@
         "twig/twig": "1.21.*"
     },
     "autoload": {
-        "psr-4": {"mini-quiz\\": "src"}
+        "psr-4": {"Miniquiz\\": "src"}
     }
 }
