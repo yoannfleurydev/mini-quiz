@@ -9,7 +9,7 @@ $app->get('/login', function() use ($app) {
 })->bind('login');
 
 $app->get('/signup', function() use ($app) {
-    return $app['twig']->render('index.html.twig');
+    return $app['twig']->render('signup.html.twig');
 })->bind('signup');
 
 $app->get('/quiz', function() use ($app) {
