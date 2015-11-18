@@ -4,6 +4,6 @@ namespace Miniquiz\DAO;
 
 use Miniquiz\Domain\quiz;
 
-class quizDAO extends DAO {
+class QuizDAO extends DAO {
     //TODO
 }

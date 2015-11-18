@@ -29,7 +29,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 
 // Register services.
 /*$app['dao.article'] = $app->share(function ($app) {
-    return new mini-quiz\DAO\nomdelaclasse($app['db']);
+    return new Miniquiz\DAO\nomdelaclasse($app['db']);
 });*/
 $app['dao.user'] = $app->share(function ($app) {
     return new Miniquiz\DAO\UserDAO($app['db']);
