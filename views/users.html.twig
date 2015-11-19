@@ -1,0 +1,13 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col m12 s12 l12">
+            <div class="collection">
+                {% for user in users %}
+                    <a href="#{# le chemin vers son profil #}" class="collection-item">{{ user.user_login }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
