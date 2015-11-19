@@ -18,7 +18,7 @@ class UserDAO extends DAO implements UserProviderInterface
      * @throws \Exception throws an exception if no matching user is found
      */
     public function find($id) {
-        $sql = "SELECT * FROM user WHERE user_id=?";
+        $sql = "SELECT * FROM mq_user WHERE user_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
@@ -27,9 +27,18 @@ class UserDAO extends DAO implements UserProviderInterface
             throw new \Exception("No user matching id " . $id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    public function findAll() {
+        $sql = "SELECT * FROM mq_user";
+        $rows = $this->getDb()->fetchAll($sql);
+
+        $users = array();
+        foreach($rows as $row) {
+            $user_id = $row['user_id'];
+            $users[$user_id] = $this->buildDomainObject($row);
+        }
+        return $users;
+    }
+
     public function loadUserByUsername($username)
     {
         $sql = "select * from user where user_login=?";
@@ -41,9 +50,6 @@ class UserDAO extends DAO implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
@@ -53,9 +59,6 @@ class UserDAO extends DAO implements UserProviderInterface
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supportsClass($class)
     {
         return 'MicroCMS\Domain\User' === $class;
@@ -69,11 +72,11 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     protected function buildDomainObject($row) {
         $user = new User();
-        $user->setId($row['usr_id']);
-        $user->setUsername($row['usr_name']);
-        $user->setPassword($row['usr_password']);
-        $user->setSalt($row['usr_salt']);
-        $user->setRole($row['usr_role']);
+        $user->setId($row['user_id']);
+        $user->setUsername($row['user_login']);
+        $user->setPassword($row['user_password']);
+        $user->setSalt($row['user_salt']);
+        $user->setRole($row['user_access_id']);
         return $user;
     }
 }

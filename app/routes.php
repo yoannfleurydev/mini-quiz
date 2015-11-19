@@ -21,6 +21,18 @@ $app->get('/quiz', function() use ($app) {
     return $app['twig']->render('quiz.html.twig');
 })->bind('quiz');
 
-$app->get('/quiz/{id}', function() use ($app) {
+$app->get('/quiz/{id}', function($id) use ($app) {
+    //$app['dao.quiz']->find($id);
+
     return $app['twig']->render('quiz_id.html.twig');
+});
+
+$app->get('/users', function() use ($app) {
+    $users = $app['dao.user']->findAll();
+    return $app['twig']->render('users.html.twig', array('users' => $users));
+});
+
+$app->get('/user/{id}', function($id) use ($app) {
+    $user = $app['dao.user']->find($id);
+    return $app['twig']->render('user.html.twig', array('user' => $user));
 });

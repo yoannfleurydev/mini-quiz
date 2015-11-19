@@ -5,7 +5,7 @@
         <div class="col m12 s12 l12">
             <div class="collection">
                 {% for user in users %}
-                    <a href="#{# le chemin vers son profil #}" class="collection-item">{{ user.user_login }}</a>
+                    <a href="/user/{{ user.id }}" class="collection-item">{{ user.username }}</a>
                 {% endfor %}
             </div>
         </div>
