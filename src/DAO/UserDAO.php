@@ -2,13 +2,9 @@
 
 namespace Miniquiz\DAO;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Miniquiz\Domain\User;
 
-class UserDAO extends DAO implements UserProviderInterface
+class UserDAO extends DAO
 {
     /**
      * Returns a user matching the supplied id.
@@ -41,7 +37,7 @@ class UserDAO extends DAO implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $sql = "select * from user where user_login=?";
+        $sql = "select * from mq_user where user_login=?";
         $row = $this->getDb()->fetchAssoc($sql, array($username));
 
         if ($row)
@@ -50,18 +46,25 @@ class UserDAO extends DAO implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
     }
 
-    public function refreshUser(UserInterface $user)
-    {
-        $class = get_class($user);
-        if (!$this->supportsClass($class)) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
-        }
-        return $this->loadUserByUsername($user->getUsername());
+    public function verifLogs($username, $password) {
+        $sql = "SELECT * FROM mq_user WHERE user_login=?";
+        $row = $this->getDb()->fetchAssoc($sql, array(htmlspecialchars($username)));
+
+        return password_verify($password, $row['user_password']);
     }
 
-    public function supportsClass($class)
-    {
-        return 'MicroCMS\Domain\User' === $class;
+    public function setUser($username, $password) {
+        $login = htmlspecialchars($username);
+        $options = array('cost' => 11);
+        $pass = password_hash($password, PASSWORD_BCRYPT, $options)."\n";
+
+
+        $userData = array(
+            'user_login' => $login,
+            'user_password' => $pass
+        );
+
+        $this->getDb()->insert("mq_user", $userData);
     }
 
     /**
@@ -75,8 +78,6 @@ class UserDAO extends DAO implements UserProviderInterface
         $user->setId($row['user_id']);
         $user->setUsername($row['user_login']);
         $user->setPassword($row['user_password']);
-        $user->setSalt($row['user_salt']);
-        $user->setRole($row['user_access_id']);
         return $user;
     }
 }

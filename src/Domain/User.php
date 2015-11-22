@@ -2,9 +2,7 @@
 
 namespace Miniquiz\Domain;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-
-class User implements UserInterface
+class User
 {
     /**
      * User id.
@@ -70,42 +68,5 @@ class User implements UserInterface
 
     public function setPassword($password) {
         $this->password = $password;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-    }
-
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    public function setRole($role) {
-        $this->role = $role;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRoles()
-    {
-        return array($this->getRole());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function eraseCredentials() {
-        // Nothing to do here
     }
 }

@@ -6,10 +6,10 @@
             <div class="card hoverable">
                 <div class="card-content">
                     <span class="card-title">Inscription</span>
-                    <form>
+                    <form action="{{ path('signup_check') }}" method="POST">
                         <div class="input-field">
-                            <label for="pseudo">Pseudo</label>
-                            <input name="pseudo" type="text">
+                            <label for="username">Pseudo</label>
+                            <input name="username" type="text">
                         </div>
                         <div class="input-field">
                             <label for="password">Mot de passe</label>

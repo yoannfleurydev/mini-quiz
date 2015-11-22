@@ -6,6 +6,6 @@ $app['db.options'] = array(
     'host'     => 'localhost',
     'port'     => '3306',
     'dbname'   => 'miniquiz',
-    'user'     => 'miniquiz_user',
-    'password' => 'secret',
+    'user'     => 'root',
+    'password' => '',
 );
