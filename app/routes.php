@@ -44,7 +44,7 @@ $app->get('/quiz/{id}', function($id) use ($app) {
 $app->get('/users', function() use ($app) {
     $users = $app['dao.user']->findAll();
     return $app['twig']->render('users.html.twig', array('users' => $users));
-});
+})->bind('users');
 
 $app->get('/logout', function() use ($app) {
     $users = $app['dao.user']->findAll();

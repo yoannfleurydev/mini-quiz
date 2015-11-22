@@ -68,9 +68,10 @@ class UserDAO extends DAO
     }
 
     /**
-     * Creates a User object based on a DB row.
+     * Crée un objet \Miniquiz\Domain\User en fonction
+     * des lignes dan la base de données.
      *
-     * @param array $row The DB row containing User data.
+     * @param array $row La ligne contenant les données du User.
      * @return \Miniquiz\Domain\User
      */
     protected function buildDomainObject($row) {
