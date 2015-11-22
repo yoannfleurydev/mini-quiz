@@ -11,19 +11,19 @@ $app->get('/login', function(Request $request) use ($app) {
 })->bind('login');
 
 $app->post('/login_check', function(Request $request) use ($app) {
-    if (null === $request->request->get('username') && null === $request->request->get('password')) {
-        if ($app['dao.user']->verifLogs($request->request->get('username'), $request->request->get('password'))) {
-            $app['session']->set('user', array('username' => $request->request->get('username')));
-        }
+    if ($app['dao.user']->verifLogs($request->request->get('username'), $request->request->get('password'))) {
+        $app['session']->set('user', array('username' => $request->request->get('username')));
+        $app['session']->set('connected', array('connected' => true));
+        return $app['twig']->render('index.html.twig');
+    } else {
+        return $app['twig']->render('login.html.twig', array('error' => "Mauvaise combinaison d'identifiants"));
     }
-    return $app['twig']->render('index.html.twig');
 })->bind('login_check');
 
 $app->post('/signup_check', function(Request $request) use ($app) {
-    if ('' != $request->request->get('username') && '' != $request->request->get('password')) {
-        $app['dao.user']->setUser($request->request->get('username'), $request->request->get('password'));
-        $app['session']->set('user', array('username' => $request->request->get('username')));
-    }
+    $app['dao.user']->setUser($request->request->get('username'), $request->request->get('password'));
+    $app['session']->set('user', array('username' => $request->request->get('username')));
+    $app['session']->set('connected', array('connected' => true));
     return $app['twig']->render('index.html.twig');
 })->bind('signup_check');
 
@@ -47,8 +47,8 @@ $app->get('/users', function() use ($app) {
 })->bind('users');
 
 $app->get('/logout', function() use ($app) {
-    $users = $app['dao.user']->findAll();
-    return $app['twig']->render('users.html.twig', array('users' => $users));
+    $app['session']->clear();
+    return $app['twig']->render('index.html.twig');
 })->bind('logout');;
 
 $app->get('/user/{id}', function($id) use ($app) {

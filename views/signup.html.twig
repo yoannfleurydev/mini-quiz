@@ -9,15 +9,15 @@
                     <form action="{{ path('signup_check') }}" method="POST">
                         <div class="input-field">
                             <label for="username">Pseudo</label>
-                            <input name="username" type="text">
+                            <input name="username" required type="text">
                         </div>
                         <div class="input-field">
                             <label for="password">Mot de passe</label>
-                            <input name="password" type="password">
+                            <input name="password" required type="password">
                         </div>
                         <div class="input-field">
                             <label for="password2">Mot de passe</label>
-                            <input name="password2" type="password">
+                            <input name="password2" required type="password">
                         </div>
                         <div class="card-action">
                             <button type="submit" class="btn waves-effect light-effect">Validez</button>
