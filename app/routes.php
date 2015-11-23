@@ -3,7 +3,8 @@
 use Symfony\Component\HttpFoundation\Request;
 
 $app->get('/', function() use ($app) {
-    return $app['twig']->render('index.html.twig');
+    $tabQuiz = $app['dao.quiz']->findAll();
+    return $app['twig']->render('index.html.twig', array('tabQuiz' => $tabQuiz));
 })->bind('home');
 
 $app->get('/login', function(Request $request) use ($app) {
@@ -74,3 +75,17 @@ $app->get('/user/{id}', function($id) use ($app) {
     $user = $app['dao.user']->find($id);
     return $app['twig']->render('user.html.twig', array('user' => $user));
 })->bind('user');
+
+$app->get('/formQuiz', function() use ($app) {
+    return $app['twig']->render('formQuiz.html.twig');
+})->bind('formQuiz');
+
+$app->post('/formQuiz_check', function(Request $request) use ($app) {
+    $title = htmlspecialchars($request->request->get('quiz_title'));
+    if (!$app['dao.quiz']->titleIsFree($title)) {
+        return $app['twig']->render('formQuiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+    }
+    $description = htmlspecialchars($request->request->get('quiz_description'));
+    $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
+    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+})->bind('formQuiz_check');

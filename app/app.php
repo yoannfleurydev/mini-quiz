@@ -18,3 +18,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app['dao.user'] = $app->share(function ($app) {
     return new Miniquiz\DAO\UserDAO($app['db']);
 });
+
+$app['dao.quiz'] = $app->share(function ($app) {
+    return new Miniquiz\DAO\QuizDAO($app['db']);
+});

@@ -18,6 +18,7 @@
 
                 {% if app.session.get("connected") %}
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="{{ path('formQuiz') }}" title="Nouveau quiz">Nouveau quiz</a></li>
                     <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}" title="Accéder à mon profil">
                             {{ app.session.get("user").userLogin }}</a>
                     </li>
