@@ -31,6 +31,11 @@ $app->get('/signup', function() use ($app) {
     return $app['twig']->render('signup.html.twig');
 })->bind('signup');
 
+$app->get('/signup_check_username', function() use ($app) {
+    $app['dao.user']->usernameIsFree();
+    return $app['twig']->render('signup.html.twig');
+})->bind('signup_check_username');
+
 $app->get('/quiz', function() use ($app) {
     return $app['twig']->render('quiz.html.twig');
 })->bind('quiz');
@@ -49,9 +54,9 @@ $app->get('/users', function() use ($app) {
 $app->get('/logout', function() use ($app) {
     $app['session']->clear();
     return $app['twig']->render('index.html.twig');
-})->bind('logout');;
+})->bind('logout');
 
 $app->get('/user/{id}', function($id) use ($app) {
     $user = $app['dao.user']->find($id);
     return $app['twig']->render('user.html.twig', array('user' => $user));
-});
+})->bind('user');

@@ -5,7 +5,11 @@
         <div class="col m12 s12 l12">
             <div class="collection">
                 {% for user in users %}
+<<<<<<< HEAD
                     <a href="/user/{{ user.userId }}" class="collection-item">{{ user.userLogin }}</a>
+=======
+                    <a href="{{ path('user', {'id': user.id}) }}" class="collection-item">{{ user.username }}</a>
+>>>>>>> c54ba46d9bb7d0061476b5814f8773af41f8e700
                 {% endfor %}
             </div>
         </div>
