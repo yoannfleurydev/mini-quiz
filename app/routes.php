@@ -3,7 +3,8 @@
 use Symfony\Component\HttpFoundation\Request;
 
 $app->get('/', function() use ($app) {
-    return $app['twig']->render('index.html.twig');
+    $tabQuiz = $app['dao.quiz']->findAll();
+    return $app['twig']->render('index.html.twig', array('tabQuiz' => $tabQuiz));
 })->bind('home');
 
 $app->get('/login', function(Request $request) use ($app) {
@@ -74,3 +75,7 @@ $app->get('/user/{id}', function($id) use ($app) {
     $user = $app['dao.user']->find($id);
     return $app['twig']->render('user.html.twig', array('user' => $user));
 })->bind('user');
+
+$app->get('/formQuiz', function() use ($app) {
+    return $app['twig']->render('formQuiz.html.twig');
+})->bind('formQuiz');

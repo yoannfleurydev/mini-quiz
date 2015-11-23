@@ -6,13 +6,24 @@ use Miniquiz\Domain\quiz;
 
 class QuizDAO extends DAO {
     public function find($id) {
-        $sql = "SELECT * FROM user WHERE quiz_id=?";
+        $sql = "SELECT * FROM mq_quiz WHERE quiz_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
             return $this->buildDomainObject($row);
         else
             throw new \Exception("No quiz matching id " . $id);
+    }
+    public function findAll() {
+        $sql = "SELECT * FROM mq_quiz";
+        $rows = $this->getDb()->fetchAll($sql);
+
+        $quiz = array();
+        foreach($rows as $row) {
+            $quiz_id = $row['user_id'];
+            $quiz[$quiz_id] = $this->buildDomainObject($row);
+        }
+        return $quiz;
     }
 
 

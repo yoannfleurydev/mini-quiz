@@ -1,0 +1,35 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    {% if error is defined %}
+        <div class="row">
+            <div class="col offset-l2 m8 s12 center">
+                <div class="card hoverable red darken-1 white-text">
+                    <div class="card-content">
+                        <p>
+                            {{ error }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col offset-l2 m8 s12 center">
+            <div class="card hoverable">
+                <div class="card-content">
+                    <span class="card-title">Créer un quizz</span>
+                    <form role="form" action="{{ path('login_check') }}" method="post">
+                        <div class="input-field">
+                            <label for="quiz_title">Titre du quiz</label>
+                            <input id="quiz_title" name="quiz_title" type="text" required>
+                        </div>
+                        <div class="card-action">
+                            <button type="submit" class="btn waves-effect light-effect">Suivant</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
