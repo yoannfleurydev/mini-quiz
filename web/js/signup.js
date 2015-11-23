@@ -17,20 +17,14 @@ $("#user_login").keyup(function () {
 });
 
 
-$("#user_password").keyup(function () {
-    verifPass();
+$("#user_password, #user_password2").keyup(function () {
+    verifyPass();
 });
 
-$("#user_password2").keyup(function () {
-    verifPass();
-});
-
-function verifPass() {
+function verifyPass() {
     if ($("#user_password").val() != $("#user_password2").val()) {
-        $("#statePass").html('<i class="material-icons">error</i>');
-        $("#statePass2").html('<i class="material-icons">error</i>');
+        $("#statePass, #statePass2").html('<i class="material-icons">error</i>');
     } else {
-        $("#statePass").html('<i class="material-icons">done</i>');
-        $("#statePass2").html('<i class="material-icons">done</i>');
+        $("#statePass, #statePass2").html('<i class="material-icons">done</i>');
     }
 }
