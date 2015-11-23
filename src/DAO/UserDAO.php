@@ -68,7 +68,7 @@ class UserDAO extends DAO
     public function setUser($username, $password) {
         $login = htmlspecialchars($username);
         $options = array('cost' => 11);
-        $pass = password_hash($password, PASSWORD_BCRYPT, $options)."\n";
+        $pass = password_hash($password, PASSWORD_BCRYPT, $options);
 
 
         $userData = array(
