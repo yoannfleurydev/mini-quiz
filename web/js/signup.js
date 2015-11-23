@@ -1,6 +1,22 @@
 /**
  * Created by valentin on 11/23/15.
  */
+
+$("#username").keyup(function () {
+    $.post("http://localhost/mini-quiz/web/signup_check_username",{
+            username : $("#username").val()
+        },
+        function (data, status) {
+            if (data) {
+                $("#stateUsername").html('<i class="material-icons">done</i>');
+            } else {
+                $("#stateUsername").html('<i class="material-icons">error</i>');
+            }
+        }
+    )
+});
+
+
 $("#password").keyup(function () {
     verifPass();
 });

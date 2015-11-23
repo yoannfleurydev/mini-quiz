@@ -31,9 +31,8 @@ $app->get('/signup', function() use ($app) {
     return $app['twig']->render('signup.html.twig');
 })->bind('signup');
 
-$app->get('/signup_check_username', function() use ($app) {
-    $app['dao.user']->usernameIsFree();
-    return $app['twig']->render('signup.html.twig');
+$app->post('/signup_check_username', function(Request $request) use ($app) {
+    return $app['dao.user']->usernameIsFree($request->request->get('username'));
 })->bind('signup_check_username');
 
 $app->get('/quiz', function() use ($app) {

@@ -53,6 +53,18 @@ class UserDAO extends DAO
         return password_verify($password, $row['user_password']);
     }
 
+    public function usernameIsFree($username) {
+        $login = htmlspecialchars($username);
+        $sql = "SELECT * FROM mq_user WHERE user_login=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($login));
+
+        if ($row == NULL) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function setUser($username, $password) {
         $login = htmlspecialchars($username);
         $options = array('cost' => 11);
