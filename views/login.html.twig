@@ -21,12 +21,12 @@
                     <span class="card-title">Connexion</span>
                     <form role="form" action="{{ path('login_check') }}" method="post">
                         <div class="input-field">
-                            <label for="username">Pseudo</label>
-                            <input id="username" required name="username" type="text" >
+                            <label for="user_login">Pseudo</label>
+                            <input id="user_login" name="user_login" type="text" required>
                         </div>
                         <div class="input-field">
-                            <label for="password">Mot de passe</label>
-                            <input id="password" required name="password" type="password">
+                            <label for="user_password">Mot de passe</label>
+                            <input id="user_password" name="user_password" type="password" required>
                         </div>
                         <div class="card-action">
                             <button type="submit" class="btn waves-effect light-effect">Validez</button>

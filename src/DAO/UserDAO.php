@@ -35,15 +35,15 @@ class UserDAO extends DAO
         return $users;
     }
 
-    public function loadUserByUsername($username)
+    public function findByUserLogin($user_login)
     {
         $sql = "select * from mq_user where user_login=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($username));
+        $row = $this->getDb()->fetchAssoc($sql, array($user_login));
 
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
+            throw new UsernameNotFoundException(sprintf('User "%s" not found.', $user_login));
     }
 
     public function verifLogs($username, $password) {
