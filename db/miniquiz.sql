@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.0.2
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 23, 2015 at 04:05 PM
--- Server version: 10.0.17-MariaDB
--- PHP Version: 5.6.14
+-- Client :  127.0.0.1
+-- Généré le :  Lun 23 Novembre 2015 à 16:55
+-- Version du serveur :  5.6.17
+-- Version de PHP :  5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,31 +14,40 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `miniquiz`
+-- Base de données :  `miniquiz`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mq_access`
+-- Structure de la table `mq_access`
 --
 
-CREATE TABLE `mq_access` (
-  `access_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mq_access` (
+  `access_id` int(11) NOT NULL AUTO_INCREMENT,
   `access_key` varchar(10) NOT NULL,
-  `access_name` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `access_name` varchar(40) NOT NULL,
+  PRIMARY KEY (`access_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3;
+
+--
+-- Contenu de la table `mq_access`
+--
+
+INSERT INTO `mq_access` (`access_id`, `access_key`, `access_name`) VALUES
+(1, 'ADMIN', 'Administrateur'),
+(2, 'USER', 'Utilisateur');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mq_answer`
+-- Structure de la table `mq_answer`
 --
 
-CREATE TABLE `mq_answer` (
+CREATE TABLE IF NOT EXISTS `mq_answer` (
   `answer_id` int(11) NOT NULL,
   `answer_content` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -46,54 +55,50 @@ CREATE TABLE `mq_answer` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mq_question`
+-- Structure de la table `mq_question`
 --
 
-CREATE TABLE `mq_question` (
-  `question_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mq_question` (
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_text` varchar(255) NOT NULL,
-  `question_good_answer` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `question_good_answer` int(11) NOT NULL,
+  PRIMARY KEY (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mq_quiz`
+-- Structure de la table `mq_quiz`
 --
 
-CREATE TABLE `mq_quiz` (
-  `quiz_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mq_quiz` (
+  `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_title` varchar(60) NOT NULL,
-  `quiz_user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `quiz_user_id` int(11) NOT NULL,
+  PRIMARY KEY (`quiz_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mq_user`
+-- Structure de la table `mq_user`
 --
 
-CREATE TABLE `mq_user` (
-  `user_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `mq_user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_login` varchar(40) NOT NULL,
   `user_password` varchar(80) NOT NULL,
-  `user_access_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `mq_user`
---
-
-INSERT INTO `mq_user` (`user_id`, `user_login`, `user_password`, `user_access_id`) VALUES
-(6, 'nephi', '$2y$11$8gFfKap9sODlrFTyWUU.COjpcnez8ek0.zAtM8Y0NQH6DYDiUF4AS', 0);
+  `user_access_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `question_answer`
+-- Structure de la table `question_answer`
 --
 
-CREATE TABLE `question_answer` (
+CREATE TABLE IF NOT EXISTS `question_answer` (
   `question_answer_id` int(11) NOT NULL,
   `answer_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL
@@ -102,78 +107,16 @@ CREATE TABLE `question_answer` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quiz_question`
+-- Structure de la table `quiz_question`
 --
 
-CREATE TABLE `quiz_question` (
+CREATE TABLE IF NOT EXISTS `quiz_question` (
   `quiz_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
-  `quiz_question_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `quiz_question_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`quiz_question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `mq_access`
---
-ALTER TABLE `mq_access`
-  ADD PRIMARY KEY (`access_id`);
-
---
--- Indexes for table `mq_question`
---
-ALTER TABLE `mq_question`
-  ADD PRIMARY KEY (`question_id`);
-
---
--- Indexes for table `mq_quiz`
---
-ALTER TABLE `mq_quiz`
-  ADD PRIMARY KEY (`quiz_id`);
-
---
--- Indexes for table `mq_user`
---
-ALTER TABLE `mq_user`
-  ADD PRIMARY KEY (`user_id`);
-
---
--- Indexes for table `quiz_question`
---
-ALTER TABLE `quiz_question`
-  ADD PRIMARY KEY (`quiz_question_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `mq_access`
---
-ALTER TABLE `mq_access`
-  MODIFY `access_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mq_question`
---
-ALTER TABLE `mq_question`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mq_quiz`
---
-ALTER TABLE `mq_quiz`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mq_user`
---
-ALTER TABLE `mq_user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `quiz_question`
---
-ALTER TABLE `quiz_question`
-  MODIFY `quiz_question_id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

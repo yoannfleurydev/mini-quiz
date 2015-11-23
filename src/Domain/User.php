@@ -26,6 +26,14 @@ class User
     private $userPassword;
 
     /**
+     * User access identifier
+     *
+     * @var integer L'identifiant numérique unique déterminant le type d'accès de l'utilisateur
+     */
+    private $userAccessId;
+
+
+    /**
      * Getter de l'identifiant numérique unique de l'utilisateur
      *
      * @return int L'identifiant numérique unique de l'utilisateur
@@ -77,5 +85,25 @@ class User
      */
     public function setUserPassword($userPassword) {
         $this->userPassword = $userPassword;
+    }
+
+    /**
+     * Getter de l'identifiant numérique unique déterminant le type d'accès de l'utilisateur
+     *
+     * @return int
+     */
+    public function getUserAccessId()
+    {
+        return $this->userAccessId;
+    }
+
+    /**
+     * Setter de l'identifiant numérique unique déterminant le type d'accès de l'utilisateur
+     *
+     * @param int $userAccessId
+     */
+    public function setUserAccessId($userAccessId)
+    {
+        $this->userAccessId = $userAccessId;
     }
 }

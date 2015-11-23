@@ -35,7 +35,7 @@ abstract class DAO
      * Construit un objet à partir d'une ligne.
      * Doit être réécris dans la classe enfant.
      *
-     * @param $row La ligne de la base de données.
+     * @param array $row La ligne de la base de données.
      */
     protected abstract function buildDomainObject($row);
 }
