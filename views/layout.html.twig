@@ -12,13 +12,13 @@
     <body>
         <nav>
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Mini-Quiz</a>
+                <a href="{{ path('home') }}" class="brand-logo">Mini-Quiz</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <a href="{{ path('home') }}" class="brand-logo">Mini-Quiz</a>
 
                 {% if app.session.get("connected") %}
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="#">{{ app.session.get("user") | first }}</a></li>
+                    <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}">{{ app.session.get("user").userLogin }}</a></li>
                     <li><a href="{{ path('logout') }}">Déconnexion</a></li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
