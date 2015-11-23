@@ -79,3 +79,13 @@ $app->get('/user/{id}', function($id) use ($app) {
 $app->get('/formQuiz', function() use ($app) {
     return $app['twig']->render('formQuiz.html.twig');
 })->bind('formQuiz');
+
+$app->post('/formQuiz_check', function(Request $request) use ($app) {
+    $title = htmlspecialchars($request->request->get('quiz_title'));
+    if (!$app['dao.quiz']->titleIsFree($title)) {
+        return $app['twig']->render('formQuiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+    }
+    $description = htmlspecialchars($request->request->get('quiz_description'));
+    $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
+    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+})->bind('formQuiz_check');
