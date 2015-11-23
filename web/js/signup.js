@@ -17,10 +17,7 @@ $("#username").keyup(function () {
 });
 
 
-$("#password").keyup(function () {
-=======
 $("#user_password").keyup(function () {
->>>>>>> origin/master
     verifPass();
 });
 
