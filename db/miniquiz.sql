@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 19 Novembre 2015 à 10:12
+-- Généré le :  Lun 23 Novembre 2015 à 11:43
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -43,10 +43,9 @@ CREATE TABLE IF NOT EXISTS `mq_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_login` varchar(40) NOT NULL,
   `user_password` varchar(80) NOT NULL,
-  `user_salt` varchar(23) NOT NULL,
   `user_access_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
