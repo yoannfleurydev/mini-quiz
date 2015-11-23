@@ -5,68 +5,77 @@ namespace Miniquiz\Domain;
 class User
 {
     /**
-     * User id.
+     * User id
      *
-     * @var integer
+     * @var integer L'identifiant numérique unique de l'utilisateur
      */
-    private $id;
+    private $userId;
 
     /**
-     * User name.
+     * User name
      *
-     * @var string
+     * @var string L'identifiant pseudonyme unique de l'utilisateur
      */
-    private $username;
+    private $userLogin;
 
     /**
      * User password.
      *
-     * @var string
+     * @var string Le mot de passe, haché, de l'utilisateur
      */
-    private $password;
+    private $userPassword;
 
     /**
-     * Salt that was originally used to encode the password.
+     * Getter de l'identifiant numérique unique de l'utilisateur
      *
-     * @var string
+     * @return int L'identifiant numérique unique de l'utilisateur
      */
-    private $salt;
+    public function getUserId() {
+        return $this->userId;
+    }
 
     /**
-     * Role.
-     * Values : ROLE_USER or ROLE_ADMIN.
+     * Setter de l'attribut userId
      *
-     * @var string
+     * @param $userId L'identifiant numérique unique de l'utilisateur
      */
-    private $role;
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function setId($id) {
-        $this->id = $id;
+    public function setUserId($userId) {
+        $this->userId = $userId;
     }
 
     /**
-     * @inheritDoc
+     * Getter de l'identifiant pseudonyme unique de l'utilisateur
+     *
+     * @return string L'identifiant pseudonyme unique de l'utilisateur
      */
-    public function getUsername() {
-        return $this->username;
-    }
-
-    public function setUsername($username) {
-        $this->username = $username;
+    public function getUserLogin() {
+        return $this->userLogin;
     }
 
     /**
-     * @inheritDoc
+     * Setter de l'identifiant pseudonyme unique de l'utilisateur
+     *
+     * @param $userLogin L'identifiant pseudonyme unique de l'utilisateur
      */
-    public function getPassword() {
-        return $this->password;
+    public function setUserLogin($userLogin) {
+        $this->userLogin = $userLogin;
     }
 
-    public function setPassword($password) {
-        $this->password = $password;
+    /**
+     * Getter du mot de passe haché de l'utilisateur
+     *
+     * @return string Le mot de passe haché de l'utilisateur
+     */
+    public function getUserPassword() {
+        return $this->userPassword;
+    }
+
+    /**
+     * Setter du mot de passe haché de l'utilisateur
+     *
+     * @param $userPassword Le mot de passe haché de l'utilisateur
+     */
+    public function setUserPassword($userPassword) {
+        $this->userPassword = $userPassword;
     }
 }

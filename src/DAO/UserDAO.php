@@ -76,9 +76,9 @@ class UserDAO extends DAO
      */
     protected function buildDomainObject($row) {
         $user = new User();
-        $user->setId($row['user_id']);
-        $user->setUsername($row['user_login']);
-        $user->setPassword($row['user_password']);
+        $user->setUserId($row['user_id']);
+        $user->setUserLogin($row['user_login']);
+        $user->setUserPassword($row['user_password']);
         return $user;
     }
 }
