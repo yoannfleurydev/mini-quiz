@@ -11,8 +11,8 @@ $app->get('/login', function(Request $request) use ($app) {
 })->bind('login');
 
 $app->post('/login_check', function(Request $request) use ($app) {
-    if ($app['dao.user']->verifLogs($request->request->get('username'), $request->request->get('password'))) {
-        $user = $app['dao.user']->loadUserByUsername($request->request->get('username'));
+    if ($app['dao.user']->verifLogs($request->request->get('user_login'), $request->request->get('user_password'))) {
+        $user = $app['dao.user']->findByUserLogin($request->request->get('user_login'));
         $app['session']->set('user', $user);
         $app['session']->set('connected', array('connected' => true));
         return $app['twig']->render('index.html.twig');
@@ -34,6 +34,7 @@ $app->post('/signup_check', function(Request $request) use ($app) {
 
     //save the user in the database
     $app['dao.user']->setUser($request->request->get('user_login'), $request->request->get('user_password'));
+    $user = $app['dao.user']->findByUserLogin($request->request->get('user_login'));
 
     //set the session
     $app['session']->set('user', $user);
