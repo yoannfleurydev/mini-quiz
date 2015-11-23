@@ -1,16 +1,16 @@
 /**
  * Created by valentin on 11/23/15.
  */
-$("#password").keyup(function () {
+$("#user_password").keyup(function () {
     verifPass();
 });
 
-$("#password2").keyup(function () {
+$("#user_password2").keyup(function () {
     verifPass();
 });
 
 function verifPass() {
-    if ($("#password").val() != $("#password2").val()) {
+    if ($("#user_password").val() != $("#user_password2").val()) {
         $("#statePass").html('<i class="material-icons">error</i>');
         $("#statePass2").html('<i class="material-icons">error</i>');
     } else {

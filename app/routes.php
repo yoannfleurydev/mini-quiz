@@ -21,7 +21,7 @@ $app->post('/login_check', function(Request $request) use ($app) {
 })->bind('login_check');
 
 $app->post('/signup_check', function(Request $request) use ($app) {
-    $app['dao.user']->setUser($request->request->get('username'), $request->request->get('password'));
+    $app['dao.user']->setUser($request->request->get('user_login'), $request->request->get('user_password'));
     $app['session']->set('user', array('username' => $request->request->get('username')));
     $app['session']->set('connected', array('connected' => true));
     return $app['twig']->render('index.html.twig');
