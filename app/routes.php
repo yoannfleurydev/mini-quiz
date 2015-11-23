@@ -21,14 +21,21 @@ $app->post('/login_check', function(Request $request) use ($app) {
 })->bind('login_check');
 
 $app->post('/signup_check', function(Request $request) use ($app) {
+    //Test if password enter by user are equals
     if ($request->request->get('user_password') !== $request->request->get('user_password2')) {
         return $app['twig']->render('signup.html.twig', array('error' => "Mots de passe non identiques"));
     }
-    
-    // TODO Ajouter un test de pseudonyme déjà existant dans la base de données. A voir si on ne peut pas faire ces tests dans un autre fichier.
 
+    //test if the login is not already taken
+    if (!$app['dao.user']->usernameIsFree($request->request->get('user_login'))) {
+        return $app['twig']->render('signup.html.twig', array('error' => "Le pseudo " . $request->request->get('username') . " déjà utilisé"));
+    }
+
+    //save the user in the database
     $app['dao.user']->setUser($request->request->get('user_login'), $request->request->get('user_password'));
-    $app['session']->set('user', array('username' => $request->request->get('username')));
+
+    //set the session
+    $app['session']->set('user', array('username' => $request->request->get('user_login')));
     $app['session']->set('connected', array('connected' => true));
     return $app['twig']->render('index.html.twig');
 })->bind('signup_check');
@@ -38,7 +45,7 @@ $app->get('/signup', function() use ($app) {
 })->bind('signup');
 
 $app->post('/signup_check_username', function(Request $request) use ($app) {
-    return $app['dao.user']->usernameIsFree($request->request->get('username'));
+    return $app['dao.user']->usernameIsFree($request->request->get('user_login'));
 })->bind('signup_check_username');
 
 $app->get('/quiz', function() use ($app) {

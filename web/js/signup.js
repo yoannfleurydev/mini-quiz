@@ -2,9 +2,9 @@
  * Created by valentin on 11/23/15.
  */
 
-$("#username").keyup(function () {
-    $.post("http://localhost/mini-quiz/web/signup_check_username",{
-            username : $("#username").val()
+$("#user_login").keyup(function () {
+    $.post("/mini-quiz/web/signup_check_username",{
+            user_login : $("#user_login").val()
         },
         function (data, status) {
             if (data) {
