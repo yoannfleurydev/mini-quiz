@@ -60,6 +60,7 @@ class QuizDAO extends DAO {
         $quiz = new Quiz();
         $quiz->setQuizId($row['quiz_id']);
         $quiz->setQuizTitle($row['quiz_title']);
+        $quiz->setQuizDescription($row['quiz_description']);
         $quiz->setQuizUserId($row['quiz_user_id']);
         return $quiz;
     }

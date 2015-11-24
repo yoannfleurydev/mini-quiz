@@ -3,11 +3,28 @@
 {% block content %}
     <div class="row">
         <div class="col m12 s12 l12">
-            <div class="collection">
-                {% for user in users %}
-                    <a href="{{ path('user', {'id': user.UserId}) }}" class="collection-item">{{ user.userLogin }}</a>
-                {% endfor %}
-            </div>
+            {% if users is not empty %}
+                <div class="collection">
+                    {% for user in users %}
+                        <a href="{{ path('user', {'id': user.UserId}) }}"
+                           class="collection-item">{{ user.userLogin }}</a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">Aucun utilisateur</span>
+                        <p>
+                            Aucun utilisateur n'a été trouvé. Vous pouvez vous inscrire grâce au
+                            bouton ci-dessous ou bien via le lien disponible dans la barre de menu
+                            principale du site.
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <a href="{{ path('signup') }}" title="S'incsrire">Inscription</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

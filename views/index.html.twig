@@ -3,11 +3,17 @@
 {% block content %}
     <div class="row">
         <div class="col m12 s12 l12">
-            <div class="collection">
-                {% for quiz in tabQuiz %}
-                    <a href="" class="collection-item">{{ quiz.quizTitle }}</a>
-                {% endfor %}
-            </div>
+            {% if quizzes is defined and quizzes is not empty %}
+                <ul class="collapsible" data-collapsible="accordion">
+                    {% for quiz in quizzes %}
+                        <li>
+                            <div class="collapsible-header"><i
+                                        class="material-icons">question_answer</i>{{ quiz.quizTitle }}</div>
+                            <div class="collapsible-body"><p>{{ quiz.quizDescription }}</p></div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

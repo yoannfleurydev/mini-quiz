@@ -3,8 +3,8 @@
 use Symfony\Component\HttpFoundation\Request;
 
 $app->get('/', function() use ($app) {
-    $tabQuiz = $app['dao.quiz']->findAll();
-    return $app['twig']->render('index.html.twig', array('tabQuiz' => $tabQuiz));
+    $quizzes = $app['dao.quiz']->findAll();
+    return $app['twig']->render('index.html.twig', array('quizzes' => $quizzes));
 })->bind('home');
 
 $app->get('/login', function(Request $request) use ($app) {

@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `mq_question` (
 CREATE TABLE IF NOT EXISTS `mq_quiz` (
   `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_title` varchar(60) NOT NULL,
+  `quiz_description` varchar(255),
   `quiz_user_id` int(11) NOT NULL,
   PRIMARY KEY (`quiz_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
