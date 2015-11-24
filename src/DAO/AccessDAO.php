@@ -1,10 +1,9 @@
 <?php
 
-namespace DAO;
+namespace Miniquiz\DAO;
 
 
 use Domain\Access;
-use Miniquiz\DAO\DAO;
 
 class AccessDAO extends DAO {
     public function find($id) {
