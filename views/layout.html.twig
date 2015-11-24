@@ -9,6 +9,7 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="{{ app.request.basepath }}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="{{ app.request.basepath }}/js/materialize.min.js"></script>
+    <script type="text/javascript" src="{{ app.request.basepath }}/js/global.js"></script>
 </head>
 <body>
 <nav>
@@ -42,7 +43,7 @@
 </nav>
 <div class="container">
     {% if error is defined %}
-        <div class="row">
+        <div id="error" class="row">
             <div class="col offset-l2 m8 s12 center">
                 <div class="card hoverable red darken-1 white-text">
                     <div class="card-content">
