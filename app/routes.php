@@ -11,6 +11,40 @@ $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig');
 })->bind('login');
 
+$app->get('/signup', function() use ($app) {
+    return $app['twig']->render('signup.html.twig');
+})->bind('signup');
+
+$app->get('/quiz', function() use ($app) {
+    return $app['twig']->render('quiz.html.twig');
+})->bind('quiz');
+
+$app->get('/quiz/{id}', function($id) use ($app) {
+    //$app['dao.quiz']->find($id);
+
+    return $app['twig']->render('quiz_id.html.twig');
+});
+
+$app->get('/users', function() use ($app) {
+    $users = $app['dao.user']->findAll();
+    return $app['twig']->render('users.html.twig', array('users' => $users));
+})->bind('users');
+
+$app->get('/logout', function() use ($app) {
+    $app['session']->clear();
+    return $app['twig']->render('index.html.twig');
+})->bind('logout');
+
+$app->get('/user/{id}', function($id) use ($app) {
+    $user = $app['dao.user']->find($id);
+    return $app['twig']->render('user.html.twig', array('user' => $user));
+})->bind('user');
+
+$app->get('/new/quiz', function() use ($app) {
+    return $app['twig']->render('newquiz.html.twig');
+})->bind('newquiz');
+
+/************* POST ***************/
 $app->post('/login_check', function(Request $request) use ($app) {
     if ($app['dao.user']->verifLogs($request->request->get('user_login'), $request->request->get('user_password'))) {
         $user = $app['dao.user']->findByUserLogin($request->request->get('user_login'));
@@ -43,49 +77,16 @@ $app->post('/signup_check', function(Request $request) use ($app) {
     return $app['twig']->render('index.html.twig');
 })->bind('signup_check');
 
-$app->get('/signup', function() use ($app) {
-    return $app['twig']->render('signup.html.twig');
-})->bind('signup');
-
 $app->post('/signup_check_username', function(Request $request) use ($app) {
     return $app['dao.user']->usernameIsFree($request->request->get('user_login'));
 })->bind('signup_check_username');
 
-$app->get('/quiz', function() use ($app) {
-    return $app['twig']->render('quiz.html.twig');
-})->bind('quiz');
-
-$app->get('/quiz/{id}', function($id) use ($app) {
-    //$app['dao.quiz']->find($id);
-
-    return $app['twig']->render('quiz_id.html.twig');
-});
-
-$app->get('/users', function() use ($app) {
-    $users = $app['dao.user']->findAll();
-    return $app['twig']->render('users.html.twig', array('users' => $users));
-})->bind('users');
-
-$app->get('/logout', function() use ($app) {
-    $app['session']->clear();
-    return $app['twig']->render('index.html.twig');
-})->bind('logout');
-
-$app->get('/user/{id}', function($id) use ($app) {
-    $user = $app['dao.user']->find($id);
-    return $app['twig']->render('user.html.twig', array('user' => $user));
-})->bind('user');
-
-$app->get('/formQuiz', function() use ($app) {
-    return $app['twig']->render('formQuiz.html.twig');
-})->bind('formQuiz');
-
-$app->post('/formQuiz_check', function(Request $request) use ($app) {
+$app->post('/newquiz_check', function(Request $request) use ($app) {
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if (!$app['dao.quiz']->titleIsFree($title)) {
-        return $app['twig']->render('formQuiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+        return $app['twig']->render('newquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
     }
     $description = htmlspecialchars($request->request->get('quiz_description'));
     $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
     return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
-})->bind('formQuiz_check');
+})->bind('newquiz_check');
