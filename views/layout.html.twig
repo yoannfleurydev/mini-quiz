@@ -6,6 +6,7 @@
     <title>Mini-Quiz</title>
     <link type="text/css" href="{{ app.request.basepath }}/css/materialize.css" rel="stylesheet" media="screen"
           title="Materialize">
+    <link type="text/css" href="{{ app.request.basepath }}/css/style.css" rel="stylesheet" media="screen">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="{{ app.request.basepath }}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="{{ app.request.basepath }}/js/materialize.min.js"></script>
@@ -59,7 +60,30 @@
 
     {% endblock %}
 </div>
-<footer class="footer">
+<footer class="page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Mini-Quiz</h5>
+                <p class="grey-text text-lighten-4">
+                    Conçu et développé par Valentin Crochemore et Yoann Fleury, étudiant en Master GIL.
+                </p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Liens utiles</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="{{ path('login') }}">Se connecter</a></li>
+                    <li><a class="grey-text text-lighten-3" href="{{ path('signup') }}">S'inscrire</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            License GPL
+            <a class="grey-text text-lighten-4 right" href="https://github.com/yoannfleurydev/mini-quiz">Codes sources</a>
+        </div>
+    </div>
 </footer>
 <script>
     $(".button-collapse").sideNav();

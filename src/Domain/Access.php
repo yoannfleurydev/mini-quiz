@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain;
+namespace Miniquiz\Domain;
 
 class Access {
     private $accessId;

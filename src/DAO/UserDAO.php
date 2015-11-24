@@ -91,6 +91,7 @@ class UserDAO extends DAO
         $user->setUserId($row['user_id']);
         $user->setUserLogin($row['user_login']);
         $user->setUserPassword($row['user_password']);
+        $user->setUserAccessId($row['user_access_id']);
         return $user;
     }
 }
