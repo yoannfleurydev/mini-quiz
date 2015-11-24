@@ -12,7 +12,7 @@ class QuizDAO extends DAO {
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new \Exception("No quiz matching id " . $id);
+            throw new \Exception("No mq_quiz matching id " . $id);
     }
 
     public function findAll() {

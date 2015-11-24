@@ -13,7 +13,7 @@ class AccessDAO extends DAO {
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new \Exception("No user matching id " . $id);
+            throw new \Exception("No mq_access matching id " . $id);
     }
 
     public function findAll() {

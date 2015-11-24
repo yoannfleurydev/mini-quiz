@@ -20,7 +20,7 @@ class UserDAO extends DAO
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new \Exception("No user matching id " . $id);
+            throw new \Exception("No mq_user matching id " . $id);
     }
 
     public function findAll() {
