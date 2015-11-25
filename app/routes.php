@@ -37,12 +37,29 @@ $app->get('/logout', function() use ($app) {
 
 $app->get('/user/{id}', function($id) use ($app) {
     $user = $app['dao.user']->find($id);
-    return $app['twig']->render('user.html.twig', array('user' => $user));
+    $myquizzes = $app['dao.quiz']->findByAuthor($id);
+    return $app['twig']->render('user.html.twig', array('user' => $user, 'myquizzes' => $myquizzes));
 })->bind('user');
 
 $app->get('/new/quiz', function() use ($app) {
     return $app['twig']->render('newquiz.html.twig');
 })->bind('newquiz');
+
+$app->get('/edit/quiz/{id}', function($id) use ($app) {
+    $quiz = $app['dao.quiz']->find($id);
+    return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
+})->bind('edit/quiz');
+
+$app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) {
+    $quiz = $app['dao.quiz']->find($id);
+    $title = htmlspecialchars($request->request->get('quiz_title'));
+    if ($title != $quiz->getQuizTitle() && !$app['dao.quiz']->titleIsFree($title)) {
+        return $app['twig']->render('editquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+    }
+    $description = htmlspecialchars($request->request->get('quiz_description'));
+    $quizId = $app['dao.quiz']->updateQuiz($title, $description, $id);
+    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+})->bind('edit/quiz_check');
 
 /************* POST ***************/
 $app->post('/login_check', function(Request $request) use ($app) {

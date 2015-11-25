@@ -38,6 +38,17 @@ class QuizDAO extends DAO {
             return false;
         }
     }
+    public function findByAuthor($idUser) {
+        $sql = "SELECT * FROM mq_quiz WHERE quiz_user_id=?";
+        $rows = $this->getDb()->fetchAll($sql, array($idUser));
+
+        $quiz = array();
+        foreach($rows as $row) {
+            $quiz_id = $row['quiz_id'];
+            $quiz[$quiz_id] = $this->buildDomainObject($row);
+        }
+        return $quiz;
+    }
 
     public function saveQuiz($title, $description, $userId) {
         $quizData = array (
@@ -49,6 +60,16 @@ class QuizDAO extends DAO {
 
         $this->getDb()->insert("mq_quiz", $quizData);
         return $this->getDb()->lastInsertId();
+    }
+
+    public function updateQuiz($title, $description, $QuizId) {
+        $quizData = array (
+            'quiz_title' => $title,
+            'quiz_description' => $description
+        );
+
+
+        $this->getDb()->update("mq_quiz", $quizData, array('quiz_id' => $QuizId));
     }
 
     /**

@@ -3,7 +3,19 @@
 {% block content %}
     <div class="row">
         <div class="col m12 s12 l12">
-            {{ user.userLogin }} - {{ user.userId }}
+        <h3>Mes quiz</h3>
+            {% if myquizzes is defined and myquizzes is not empty %}
+                <ul class="collapsible" data-collapsible="accordion">
+                    {% for quiz in myquizzes %}
+                        <li>
+                            <div class="collapsible-header">
+                                <i class="material-icons">question_answer</i>{{ quiz.quizTitle }}</div>
+                            <div class="collapsible-body"><p>{{ quiz.quizDescription }}
+                            <a href="{{ path('edit/quiz', {'id' : quiz.quizId}) }}"><i class="material-icons">edit</i></a></p></div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
