@@ -5,15 +5,31 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
             <h3>Utilisateurs</h3>
             {% if users is defined %}
-            <ul class="list-group">
-                {% for user in users %}
-                    <li class="list-group-item">{{ user.userLogin }}</li>
-                {% endfor %}
-            </ul>
+                <ul class="list-group">
+                    {% for user in users %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-9 col-md-9 col-sm12 col-xs-12">
+                                    {{ user.userLogin }}
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    <a href="#{# path('edituser') #}" class="btn btn-primary" title="Modifier l'utilisateur" role="button">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    <a href="#{# path('deleteuser') #}" class="btn btn-primary" title="Supprimer l'utilisateur" role="button">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% else %}
-            <p>
-                Aucun utilisateur n'a été trouvé dans la base de données.
-            </p>
+                <p>
+                    Aucun utilisateur n'a été trouvé dans la base de données.
+                </p>
             {% endif %}
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
