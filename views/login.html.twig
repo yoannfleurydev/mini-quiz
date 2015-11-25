@@ -2,25 +2,23 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-sm-8 col-lg-6 col-lg-offset-3 col-xs-12 center">
+        <div class="col-sm-8 col-lg-6 col-lg-offset-3 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Connexion</h3>
                 </div>
                 <div class="panel-body">
                     <form role="form" action="{{ path('login_check') }}" method="post">
-                        <div class="input-field">
+                        <div class="form-group">
                             <label for="user_login">Pseudo</label>
-                            <input id="user_login" name="user_login" type="text" required>
+                            <input type="text" class="form-control" id="user_login" name="user_login" required>
                         </div>
-                        <div class="input-field">
+                        <div class="form-group">
                             <label for="user_password">Mot de passe</label>
-                            <input id="user_password" name="user_password" type="password" required>
+                            <input class="form-control" id="user_password" name="user_password" type="password" required>
                         </div>
-                        <div class="card-action">
-                            <button type="submit" class="btn btn-default navbar-btn">Validez</button>
-                            <button type="reset" class="btn btn-default navbar-btn">Effacez</button>
-                        </div>
+                        <button type="submit" class="btn btn-default">Validez</button>
+                        <button type="reset" class="btn btn-default">Effacez</button>
                     </form>
                 </div>
             </div>

@@ -8,9 +8,11 @@ $("#user_login").keyup(function () {
         },
         function (data, status) {
             if (data) {
-                $("#stateUsername").html('<i class="material-icons">done</i>');
+                $("#stateUsername").removeClass('glyphicon glyphicon-ok form-control-feedback');
+                $("#stateUsername").addClass('glyphicon glyphicon-ok form-control-feedback');
             } else {
-                $("#stateUsername").html('<i class="material-icons">error</i>');
+                $("#stateUsername").removeClass('glyphicon glyphicon-error-sign form-control-feedback');
+                $("#stateUsername").addClass('glyphicon glyphicon-error-sign form-control-feedback');
             }
         }
     )

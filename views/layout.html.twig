@@ -34,7 +34,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         {% if app.session.get("connected") %}
-                            app.session.get("user").userName
+                            {{ app.session.get("user").userlogin }}
                         {% else %}
                             Non connecté
                         {% endif %}
@@ -42,7 +42,7 @@
                     <ul class="dropdown-menu">
                         {% if app.session.get("connected") %}
                             <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}" title="Accéder à mon profil">
-                                {{ app.session.get("user").userLogin }}</a></li>
+                                Mon profil</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ path('logout') }}" title="Se déconnecter">Déconnexion</a></li>
 
@@ -103,8 +103,5 @@
                 </div>
         </div>
     </nav>
-<script>
-    $(".button-collapse").sideNav();
-</script>
 </body>
 </html>
