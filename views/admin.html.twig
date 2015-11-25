@@ -2,14 +2,33 @@
 
 {% block content %}
     <div class="row">
-        <div class="col s12 m6 l3">
-
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <h3>Utilisateurs</h3>
+            {% if users is defined %}
+            <ul class="list-group">
+                {% for user in users %}
+                    <li class="list-group-item">{{ user.userLogin }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>
+                Aucun utilisateur n'a été trouvé dans la base de données.
+            </p>
+            {% endif %}
         </div>
-        <div class="col s12 m6 l3">
-
-        </div>
-        <div class="col s12 m6 l3">
-
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <h3>Quiz</h3>
+            {% if quizzes is defined %}
+                <ul class="list-group">
+                    {% for quiz in quizzes %}
+                        <li class="list-group-item">{{ quiz.quizId }} - {{ quiz.quizTitle }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>
+                    Aucun quiz n'a été trouvé dans la base de données.
+                </p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
