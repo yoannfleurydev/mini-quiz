@@ -4,43 +4,58 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini-Quiz</title>
-    <link type="text/css" href="{{ app.request.basepath }}/css/materialize.css" rel="stylesheet" media="screen"
+    <link type="text/css" href="{{ app.request.basepath }}/css/bootstrap.css" rel="stylesheet" media="screen"
           title="Materialize">
     <link type="text/css" href="{{ app.request.basepath }}/css/style.css" rel="stylesheet" media="screen">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="{{ app.request.basepath }}/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="{{ app.request.basepath }}/js/materialize.min.js"></script>
+    <script type="text/javascript" src="{{ app.request.basepath }}/js/bootstrap.js"></script>
     <script type="text/javascript" src="{{ app.request.basepath }}/js/global.js"></script>
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper">
-        <a href="{{ path('home') }}" class="brand-logo">Mini-Quiz</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <a href="{{ path('home') }}" class="brand-logo">Mini-Quiz</a>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('home') }}">Mini-Quiz</a>
+        </div>
 
-        {% if app.session.get("connected") %}
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="{{ path('newquiz') }}" title="Nouveau quiz">Nouveau quiz</a></li>
-                <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}" title="Accéder à mon profil">
-                        {{ app.session.get("user").userLogin }}</a>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                {% if app.session.get("connected") %}
+                    <li><a href="{{ path('newquiz') }}" title="Nouveau quiz">Nouveau quiz</a></li>
+                {% endif %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {% if app.session.get("connected") %}
+                            app.session.get("user").userName
+                        {% else %}
+                            Non connecté
+                        {% endif %}
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        {% if app.session.get("connected") %}
+                            <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}" title="Accéder à mon profil">
+                                {{ app.session.get("user").userLogin }}</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ path('logout') }}" title="Se déconnecter">Déconnexion</a></li>
+
+                        {% else %}
+                            <li><a href="{{ path('login') }}" title="Se connecter">Connexion</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ path('signup') }}" title="S'inscrire">Inscription</a></li>
+                        {% endif %}
+                    </ul>
                 </li>
-                <li><a href="{{ path('logout') }}" title="Se déconnecter">Déconnexion</a></li>
             </ul>
-            <ul class="side-nav" id="mobile-demo">
-                <li><a href="{{ path('logout') }}" title="Se déconnecter">Déconnexion</a></li>
-            </ul>
-        {% else %}
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="{{ path('login') }}" title="Se connecter">Connexion</a></li>
-                <li><a href="{{ path('signup') }}" title="S'inscrire">Inscription</a></li>
-            </ul>
-            <ul class="side-nav" id="mobile-demo">
-                <li><a href="{{ path('login') }}" title="Se connecter">Connexion</a></li>
-                <li><a href="{{ path('signup') }}" title="S'inscrire">Inscription</a></li>
-            </ul>
-        {% endif %}
-    </div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
     {% if error is defined %}
@@ -60,31 +75,34 @@
 
     {% endblock %}
 </div>
-<footer class="page-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">Mini-Quiz</h5>
-                <p class="grey-text text-lighten-4">
-                    Conçu et développé par Valentin Crochemore et Yoann Fleury, étudiant en Master GIL.
-                </p>
-            </div>
-            <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Liens utiles</h5>
-                <ul>
-                    <li><a class="grey-text text-lighten-3" href="{{ path('login') }}">Se connecter</a></li>
-                    <li><a class="grey-text text-lighten-3" href="{{ path('signup') }}">S'inscrire</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
-            License GPL
-            <a class="grey-text text-lighten-4 right" href="https://github.com/yoannfleurydev/mini-quiz">Codes sources</a>
+            <div class="row">
+                <div class="col-lg-6 col-xs-12">
+                    <h5 class="white-text">Mini-Quiz</h5>
+                    <p class="grey-text text-lighten-4">
+                        Conçu et développé par Valentin Crochemore et Yoann Fleury, étudiant en Master GIL.
+                    </p>
+                </div>
+                <div class="col-lg-4 offset-l2 col-xs-12">
+                    <h5 class="white-text">Liens utiles</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('login') }}">Se connecter</a></li>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('signup') }}">S'inscrire</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-</footer>
+        <div class="container">
+            <div class="col-lg-6 col-xs-12">
+                License GPL
+            </div>
+                <div class="col-lg-6 col-xs-12">
+                    <a class="grey-text text-lighten-4 right" href="https://github.com/yoannfleurydev/mini-quiz">
+                        Codes sources</a>
+                </div>
+        </div>
+    </nav>
 <script>
     $(".button-collapse").sideNav();
 </script>
