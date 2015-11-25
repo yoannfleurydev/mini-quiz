@@ -32,7 +32,6 @@ $app->get('/users', function() use ($app) {
 
 $app->get('/logout', function() use ($app) {
     $app['session']->clear();
-    return $app['twig']->render('index.html.twig');
 })->bind('logout');
 
 $app->get('/user/{id}', function($id) use ($app) {

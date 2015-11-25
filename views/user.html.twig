@@ -2,19 +2,28 @@
 
 {% block content %}
     <div class="row">
-        <div class="col m12 s12 l12">
-        <h3>Mes quiz</h3>
+        <div class="col-sm-12 col-xs-12 col-lg-12">
             {% if myquizzes is defined and myquizzes is not empty %}
-                <ul class="collapsible" data-collapsible="accordion">
+                <h3>Mes quiz</h3>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     {% for quiz in myquizzes %}
-                        <li>
-                            <div class="collapsible-header">
-                                <i class="material-icons">question_answer</i>{{ quiz.quizTitle }}</div>
-                            <div class="collapsible-body"><p>{{ quiz.quizDescription }}
-                            <a href="{{ path('edit/quiz', {'id' : quiz.quizId}) }}"><i class="material-icons">edit</i></a></p></div>
-                        </li>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ quiz.quizId }}" aria-expanded="false" aria-controls="collapse{{ quiz.quizId }}">
+                                        <span class="glyphicon glyphicon-question-sign"></span> {{ quiz.quizTitle }}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ quiz.quizId }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ quiz.quizId }}">
+                                <div class="panel-body">
+                                    {{ quiz.quizDescription }}
+                                    <a href="{{ path('edit/quiz', {'id' : quiz.quizId}) }}"><span class="glyphicon glyphicon-edit"></span></a>
+                                </div>
+                            </div>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             {% endif %}
         </div>
     </div>

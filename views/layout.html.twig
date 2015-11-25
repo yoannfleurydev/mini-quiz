@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini-Quiz</title>
     <link type="text/css" href="{{ app.request.basepath }}/css/bootstrap.css" rel="stylesheet" media="screen"
-          title="Materialize">
-    <link type="text/css" href="{{ app.request.basepath }}/css/style.css" rel="stylesheet" media="screen">
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+          title="Bootstrap">
+    <link type="text/css" href="{{ app.request.basepath }}/css/style.css" rel="stylesheet" media="screen"
+          title="">
     <script type="text/javascript" src="{{ app.request.basepath }}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="{{ app.request.basepath }}/js/bootstrap.js"></script>
     <script type="text/javascript" src="{{ app.request.basepath }}/js/global.js"></script>
@@ -60,13 +60,11 @@
 <div class="container">
     {% if error is defined %}
         <div id="error" class="row">
-            <div class="col offset-l2 m8 s12 center">
-                <div class="card hoverable red darken-1 white-text">
-                    <div class="card-content">
-                        <p>
-                            {{ error }}
-                        </p>
-                    </div>
+            <div class="col-lg-offset-2 col-sm-8 col-xs-12">
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                        {{ error }}
                 </div>
             </div>
         </div>
@@ -75,12 +73,12 @@
 
     {% endblock %}
 </div>
-    <nav class="navbar navbar-default navbar-fixed-bottom">
+    <nav class="navbar navbar-default">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-xs-12">
-                    <h5 class="white-text">Mini-Quiz</h5>
-                    <p class="grey-text text-lighten-4">
+                    <h5>Mini-Quiz</h5>
+                    <p>
                         Conçu et développé par Valentin Crochemore et Yoann Fleury, étudiant en Master GIL.
                     </p>
                 </div>
