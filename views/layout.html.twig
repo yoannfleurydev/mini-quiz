@@ -16,7 +16,8 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -32,7 +33,8 @@
                     <li><a href="{{ path('newquiz') }}" title="Nouveau quiz">Nouveau quiz</a></li>
                 {% endif %}
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
                         {% if app.session.get("connected") %}
                             {{ app.session.get("user").userlogin }}
                         {% else %}
@@ -41,8 +43,9 @@
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         {% if app.session.get("connected") %}
-                            <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}" title="Accéder à mon profil">
-                                Mon profil</a></li>
+                            <li><a href="{{ path('user', {'id': app.session.get("user").userId}) }}"
+                                   title="Accéder à mon profil">
+                                    Mon profil</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ path('logout') }}" title="Se déconnecter">Déconnexion</a></li>
 
@@ -64,7 +67,7 @@
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                        {{ error }}
+                    {{ error }}
                 </div>
             </div>
         </div>
@@ -73,33 +76,10 @@
 
     {% endblock %}
 </div>
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-xs-12">
-                    <h5>Mini-Quiz</h5>
-                    <p>
-                        Conçu et développé par Valentin Crochemore et Yoann Fleury, étudiant en Master GIL.
-                    </p>
-                </div>
-                <div class="col-lg-4 offset-l2 col-xs-12">
-                    <h5 class="white-text">Liens utiles</h5>
-                    <ul>
-                        <li><a class="grey-text text-lighten-3" href="{{ path('login') }}">Se connecter</a></li>
-                        <li><a class="grey-text text-lighten-3" href="{{ path('signup') }}">S'inscrire</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="col-lg-6 col-xs-12">
-                License GPL
-            </div>
-                <div class="col-lg-6 col-xs-12">
-                    <a class="grey-text text-lighten-4 right" href="https://github.com/yoannfleurydev/mini-quiz">
-                        Codes sources</a>
-                </div>
-        </div>
-    </nav>
+<footer class="footer">
+    <div class="container">
+        <p><a href="https://github.com/yoannfleurydev/mini-quiz" class="btn btn-default">Sources</a></p>
+    </div>
+</footer>
 </body>
 </html>
