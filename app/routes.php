@@ -57,8 +57,9 @@ $app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) 
         return $app['twig']->render('editquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
     }
     $description = htmlspecialchars($request->request->get('quiz_description'));
-    $quizId = $app['dao.quiz']->updateQuiz($title, $description, $id);
-    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+    $app['dao.quiz']->updateQuiz($title, $description, $id);
+    $quiz = $app['dao.quiz']->find($id);
+    return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz));
 })->bind('edit/quiz_check');
 
 /************* POST ***************/
@@ -107,3 +108,17 @@ $app->post('/newquiz_check', function(Request $request) use ($app) {
     $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
     return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
 })->bind('newquiz_check');
+
+$app->post('/newAnswer_check', function(Request $request) use ($app) {
+    $answer_content = htmlspecialchars($request->request->get('answer_content'));
+    $answer1 = htmlspecialchars($request->request->get('answer_content'));
+    $answer2 = htmlspecialchars($request->request->get('answer_content'));
+    $answer3 = htmlspecialchars($request->request->get('answer_content'));
+    $answer4 = htmlspecialchars($request->request->get('answer_content'));
+    if (!$app['dao.quiz']->titleIsFree($title)) {
+        return $app['twig']->render('newquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+    }
+    $description = htmlspecialchars($request->request->get('quiz_description'));
+    $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
+    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+})->bind('newAnswer_check');
