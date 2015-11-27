@@ -58,8 +58,13 @@ $app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) 
     }
     $description = htmlspecialchars($request->request->get('quiz_description'));
     $app['dao.quiz']->updateQuiz($title, $description, $id);
+    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+    $questions= array();
+    foreach ($questions_id as $question_id) {
+        array_push($questions, $app['dao.question']->find($question_id));
+    }
     $quiz = $app['dao.quiz']->find($id);
-    return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz));
+    return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('edit/quiz_check');
 
 /************* POST ***************/
@@ -106,19 +111,32 @@ $app->post('/newquiz_check', function(Request $request) use ($app) {
     }
     $description = htmlspecialchars($request->request->get('quiz_description'));
     $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
-    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+    $quiz = $app['dao.quiz']->find($quizId);
+    return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz));
 })->bind('newquiz_check');
 
-$app->post('/newAnswer_check', function(Request $request) use ($app) {
-    $answer_content = htmlspecialchars($request->request->get('answer_content'));
-    $answer1 = htmlspecialchars($request->request->get('answer_content'));
-    $answer2 = htmlspecialchars($request->request->get('answer_content'));
-    $answer3 = htmlspecialchars($request->request->get('answer_content'));
-    $answer4 = htmlspecialchars($request->request->get('answer_content'));
-    if (!$app['dao.quiz']->titleIsFree($title)) {
-        return $app['twig']->render('newquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+$app->post('/newAnswer_check/{id}', function(Request $request, $id) use ($app) {
+    $question_content = htmlspecialchars($request->request->get('question_text'));
+    $answer1 = htmlspecialchars($request->request->get('answer1_content'));
+    $answer2 = htmlspecialchars($request->request->get('answer2_content'));
+    $answer3 = htmlspecialchars($request->request->get('answer3_content'));
+    $answer4 = htmlspecialchars($request->request->get('answer4_content'));
+    $idQuestion = $app['dao.question']->saveQuestion($question_content, $request->request->get('answer_is_good'));
+    $idAnswer1 = $app['dao.answer']->saveAnswer($answer1);
+    $app['dao.question']->addAnswer($idQuestion, $idAnswer1);
+    $idAnswer2 = $app['dao.answer']->saveAnswer($answer2);
+    $app['dao.question']->addAnswer($idQuestion, $idAnswer2);
+    $idAnswer3 = $app['dao.answer']->saveAnswer($answer3);
+    $app['dao.question']->addAnswer($idQuestion, $idAnswer3);
+    $idAnswer4 = $app['dao.answer']->saveAnswer($answer4);
+    $app['dao.question']->addAnswer($idQuestion, $idAnswer4);
+    $app['dao.quiz']->addQuestion($idQuestion, $id);
+
+    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+    $questions= array();
+    foreach ($questions_id as $question_id) {
+        array_push($questions, $app['dao.question']->find($question_id));
     }
-    $description = htmlspecialchars($request->request->get('quiz_description'));
-    $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
-    return $app['twig']->render('formAnswer.html.twig', array('quizId' => $quizId));
+    $quiz = $app['dao.quiz']->find($id);
+    return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('newAnswer_check');

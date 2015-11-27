@@ -27,7 +27,7 @@ class QuestionDAO extends DAO {
         return $quiz;
     }
 
-    public function saveQuiz($question_text, $question_good_answer) {
+    public function saveQuestion($question_text, $question_good_answer) {
         $questionData = array (
             'question_text' => $question_text,
             'question_good_answer' => $question_good_answer
@@ -35,6 +35,17 @@ class QuestionDAO extends DAO {
 
 
         $this->getDb()->insert("mq_question", $questionData);
+        return $this->getDb()->lastInsertId();
+    }
+
+    public function addAnswer($question_id, $answer_id) {
+        $questionData = array (
+            'question_id' => $question_id,
+            'answer_id' => $answer_id
+        );
+
+
+        $this->getDb()->insert("question_answer", $questionData);
         return $this->getDb()->lastInsertId();
     }
 

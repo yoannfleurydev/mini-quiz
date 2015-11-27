@@ -24,3 +24,11 @@ $app['dao.quiz'] = $app->share(function ($app) {
 $app['dao.access'] = $app->share(function ($app) {
     return new Miniquiz\DAO\AccessDAO($app['db']);
 });
+
+$app['dao.question'] = $app->share(function ($app) {
+    return new Miniquiz\DAO\QuestionDAO($app['db']);
+});
+
+$app['dao.answer'] = $app->share(function ($app) {
+    return new Miniquiz\DAO\AnswerDAO($app['db']);
+});

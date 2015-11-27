@@ -27,7 +27,7 @@ class AnswerDAO extends DAO {
         return $answer;
     }
 
-    public function saveQuiz($answer_content) {
+    public function saveAnswer($answer_content) {
         $answerData = array (
             'answer_content' => $answer_content
         );

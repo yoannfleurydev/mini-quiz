@@ -72,6 +72,27 @@ class QuizDAO extends DAO {
         $this->getDb()->update("mq_quiz", $quizData, array('quiz_id' => $QuizId));
     }
 
+    public function addQuestion($question_id, $quiz_id) {
+        $quizData = array (
+            'quiz_id' => $quiz_id,
+            'question_id' => $question_id
+        );
+
+
+        $this->getDb()->insert("quiz_question", $quizData);
+    }
+
+    public function getQuestionByQuiz($quiz_id) {
+        $sql = 'SELECT * FROM quiz_question WHERE quiz_id=?';
+        $rows = $this->getDb()->fetchAll($sql, array($quiz_id));
+
+        $questions = array();
+        foreach ($rows as $row) {
+            array_push($questions, $row['question_id']);
+        }
+        return $questions;
+    }
+
     /**
      * @param $row La ligne de la base de données en tableau PHP
      * @return Quiz L'objet Quiz instancié
