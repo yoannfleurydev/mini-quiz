@@ -32,3 +32,13 @@ $app['dao.question'] = $app->share(function ($app) {
 $app['dao.answer'] = $app->share(function ($app) {
     return new Miniquiz\DAO\AnswerDAO($app['db']);
 });
+
+$app['function.isAdmin'] = $app->share(function($app) {
+    $user = $app['session']->get('user');
+    if (isset($user)) {
+        $userAccessId = $user->getUserAccessId();
+        $userAccess = $app['dao.access']->find($userAccessId);
+        return ($userAccess->getAccessKey() === 'ADMIN');
+    }
+    return false;
+});
