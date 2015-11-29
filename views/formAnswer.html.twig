@@ -15,11 +15,11 @@
         <div class="row">
             {% for question in questions %}
                 <div class="col-lg-offset-2 col-sm-8 col-xs-12">
-                <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> {{ question.QuestionText }} </h3>
-                </div>
-                </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> {{ question.QuestionText }} </h3>
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -34,14 +34,14 @@
                     <form role="form" action="{{ path('newAnswer_check', {"id" : quiz.quizid}) }}" method="post">
                         <div class="form-group">
                             <label for="question_text">Question</label>
-                            <textarea class="form-control" id="question_text" name="question_text" ></textarea>
+                            <textarea class="form-control" id="question_text" name="question_text" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="answer1_content">Réponse 1</label>
                             <div class="input-group">
                                 <textarea class="form-control" id="answer1_content" name="answer1_content" ></textarea>
                                   <span class="input-group-addon">
-                                    <input name="answer_is_good" value="1" type="radio" aria-label="...">
+                                    <input name="answer_is_good" value="1" type="radio" aria-label="..." required>
                                   </span>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                             <div class="input-group">
                                 <textarea class="form-control" id="answer2_content" name="answer2_content" ></textarea>
                                   <span class="input-group-addon">
-                                    <input name="answer_is_good" value="2" type="radio" aria-label="...">
+                                    <input name="answer_is_good" value="2" type="radio" aria-label="..." required>
                                   </span>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                             <div class="input-group">
                                 <textarea class="form-control" id="answer3_content" name="answer3_content" ></textarea>
                                   <span class="input-group-addon">
-                                    <input name="answer_is_good" value="3" type="radio" aria-label="...">
+                                    <input name="answer_is_good" value="3" type="radio" aria-label="..." required>
                                   </span>
                             </div>
                         </div>
@@ -68,13 +68,13 @@
                             <div class="input-group">
                                 <textarea class="form-control" id="answer4_content" name="answer4_content" ></textarea>
                                   <span class="input-group-addon">
-                                    <input name="answer_is_good" value="4" type="radio" aria-label="...">
+                                    <input name="answer_is_good" value="4" type="radio" aria-label="..." required>
                                   </span>
                             </div>
                         </div>
                         <div class="card-action">
-                            <button type="submit" class="btn btn-default">Ajouter question</button>
-                            <button type="submit" class="btn btn-default">Terminez</button>
+                            <button type="submit" name="add" value="add" class="btn btn-default">Ajouter question</button>
+                            <button type="submit" name="finish" value="finish" class="btn btn-default">Terminez</button>
                         </div>
                     </form>
                 </div>

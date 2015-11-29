@@ -116,6 +116,13 @@ $app->post('/newquiz_check', function(Request $request) use ($app) {
 })->bind('newquiz_check');
 
 $app->post('/newAnswer_check/{id}', function(Request $request, $id) use ($app) {
+
+    $quiz = $app['dao.quiz']->find($id);
+    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+    $questions= array();
+    foreach ($questions_id as $question_id) {
+        array_push($questions, $app['dao.question']->find($question_id));
+    }
     $question_content = htmlspecialchars($request->request->get('question_text'));
     $answer1 = htmlspecialchars($request->request->get('answer1_content'));
     $answer2 = htmlspecialchars($request->request->get('answer2_content'));
@@ -131,12 +138,9 @@ $app->post('/newAnswer_check/{id}', function(Request $request, $id) use ($app) {
     $idAnswer4 = $app['dao.answer']->saveAnswer($answer4);
     $app['dao.question']->addAnswer($idQuestion, $idAnswer4);
     $app['dao.quiz']->addQuestion($idQuestion, $id);
-
-    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
-    $questions= array();
-    foreach ($questions_id as $question_id) {
-        array_push($questions, $app['dao.question']->find($question_id));
+    if ($request->request->get('finish')) {
+        $quizzes = $app['dao.quiz']->findAll();
+        return $app['twig']->render('index.html.twig', array('quizzes' => $quizzes));
     }
-    $quiz = $app['dao.quiz']->find($id);
     return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('newAnswer_check');
