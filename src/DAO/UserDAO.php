@@ -35,6 +35,10 @@ class UserDAO extends DAO
         return $users;
     }
 
+    public function deleteId($id) {
+        $this->getDb()->delete('mq_user', array('user_id' => $id));
+    }
+
     public function findByUserLogin($user_login)
     {
         $sql = "select * from mq_user where user_login=?";

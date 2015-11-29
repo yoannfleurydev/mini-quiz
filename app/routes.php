@@ -67,6 +67,17 @@ $app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) 
     return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('edit/quiz_check');
 
+$app->get('/delete/user/{id}', function ($id) use ($app) {
+    if (null === $user = $app['session']->get('user')) {
+        return $app->redirect('/login');
+    }
+
+    if ($app['function.isAdmin'] || $user->getUserId() === $id) {
+        $app['dao.user']->deleteId($id);
+        return $app->redirect('/admin');
+    }
+})->bind('deleteUser')->assert('id', '\d+');
+
 /************* POST ***************/
 $app->post('/login_check', function(Request $request) use ($app) {
     if ($app['dao.user']->verifLogs($request->request->get('user_login'), $request->request->get('user_password'))) {
