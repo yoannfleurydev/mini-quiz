@@ -77,7 +77,10 @@ class UserDAO extends DAO
 
         $userData = array(
             'user_login' => $login,
-            'user_password' => $pass
+            'user_password' => $pass,
+            // TODO en dur dans le code, mais peut être serait-il intéressant de faire une requête sur la base de
+            // données pour avoir par défaut l'id qui correspond à un USER.
+            'user_access_id' => 2
         );
 
         $this->getDb()->insert("mq_user", $userData);
