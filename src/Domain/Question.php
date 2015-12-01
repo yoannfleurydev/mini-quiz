@@ -6,6 +6,7 @@ class Question {
     private $question_id;
     private $question_text;
     private $question_good_answer;
+    private $answers;
 
     /**
      * @return mixed
@@ -53,6 +54,22 @@ class Question {
     public function setQuestionGoodAnswer($question_good_answer)
     {
         $this->question_good_answer = $question_good_answer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
     }
 
 
