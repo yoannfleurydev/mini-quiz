@@ -48,9 +48,9 @@ INSERT INTO `mq_access` (`access_id`, `access_key`, `access_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `mq_answer` (
-  `answer_id` int(11) NOT NULL,
+  `answer_id` int(11) NOT NULL AUTO_INCREMENT,
   `answer_content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `mq_user` (
   `user_password` varchar(80) NOT NULL,
   `user_access_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
