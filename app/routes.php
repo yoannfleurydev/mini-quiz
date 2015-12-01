@@ -55,7 +55,6 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
 })->bind('edit/quiz');
 
-<<<<<<< HEAD
 $app->get('/answerQuiz/{id}', function(Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
@@ -71,9 +70,6 @@ $app->get('/answerQuiz/{id}', function(Request $request, $id) use ($app) {
 })->bind('answerQuiz');
 
 $app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) {
-=======
-$app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
->>>>>>> origin/master
     $quiz = $app['dao.quiz']->find($id);
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if ($title != $quiz->getQuizTitle() && !$app['dao.quiz']->titleIsFree($title)) {
