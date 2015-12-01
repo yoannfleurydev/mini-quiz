@@ -2,7 +2,21 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-sm-12 col-xs-12 col-lg-12">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <a href="{{ path('edituser', {id: user.userId}) }}" type="button" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Modifier mon profil
+                    </a>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <a href="{{  path('deleteuser', {id: user.userId}) }}" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer mon profil
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             {% if myquizzes is defined and myquizzes is not empty %}
                 <h3>Mes quiz</h3>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -25,18 +39,6 @@
                     {% endfor %}
                 </div>
             {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-2 col-sm-12">
-            <a href="{{ path('edituser', {id: user.userId}) }}" type="button" class="btn btn-primary">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Modifier mon profil
-            </a>
-        </div>
-        <div class="col-lg-2 col-sm-12">
-            <a href="{{  path('deleteuser', {id: user.userId}) }}" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer mon profil
-            </a>
         </div>
     </div>
 {% endblock %}
