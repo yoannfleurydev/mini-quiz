@@ -55,17 +55,18 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
 })->bind('edit/quiz');
 
-$app->get('/answerQuiz/{id}', function(Request $request, $id) use ($app) {
+$app->get('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
-    $questions= array();
+    $questions = array();
     foreach ($questions_id as $question_id) {
         $question = $app['dao.question']->find($question_id);
-        if ($question != NULL) {
+        if ($question != null) {
             $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
             array_push($questions, $question);
         }
     }
+
     return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('answerQuiz');
 
@@ -81,7 +82,7 @@ $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app)
     $questions = array();
     foreach ($questions_id as $question_id) {
         $question = $app['dao.question']->find($question_id);
-        if ($question != NULL) {
+        if ($question != null) {
             array_push($questions, $question);
         }
     }
@@ -101,8 +102,7 @@ $app->get('/delete/user/{id}', function ($id) use ($app) {
     // Si l'utilisateur est admin, alors il peut supprimer un utilisateur.
     if ($app['function.isAdmin']) {
         $app['dao.user']->deleteId($id);
-        $app['session']->getFlashBag()->add('message', array('content' => 'L\'utilisateur a bien été supprimé', 'type'
-        => 'warning'));
+        $app['session']->getFlashBag()->add('message', array('content' => 'L\'utilisateur a bien été supprimé', 'type' => 'warning'));
 
         return $app->redirect('/admin');
     }
@@ -136,14 +136,10 @@ $app->get('/edit/user/{id}', function ($id) use ($app) {
         $quizzes = $app['dao.quiz']->findByAuthor($id);
         $editUser = $app['dao.user']->find($id);
 
-        return $app['twig']->render('edituser.html.twig', array(
-            'user' => $editUser,
-            'myquizzes' => $quizzes)
-        );
+        return $app['twig']->render('edituser.html.twig', array('user' => $editUser, 'myquizzes' => $quizzes));
     }
 
-    $app['session']->getFlashBag()->add('message', array('content' => 'Cette opération ne vous est pas permise', 'type'
-    => 'danger'));
+    $app['session']->getFlashBag()->add('message', array('content' => 'Cette opération ne vous est pas permise', 'type' => 'danger'));
 
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
 })->bind('edituser');
@@ -233,3 +229,47 @@ $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) 
 
     return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('newAnswer_check');
+
+$app->post('/edit/user/{id}/newpasswordchecker', function (Request $request, $id) use ($app) {
+
+    // Si aucun utilisateur n'est connecté, alors on autorise rien.
+    if (null === $user = $app['session']->get('user')) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
+    // On récupère les deux mots de passe.
+    // TODO Est il nécessaire de mettre un htmlspecialchar ici ?
+    $user_password1 = $request->request->get('user_password1');
+    $user_password2 = $request->request->get('user_password2');
+
+    // Si le mot de passe et sa vérification sont différents, alors on quitte le script
+    if ($user_password1 !== $user_password2) {
+        $app['session']->getFlashBag()->add('message', array('content' => 'Les mots de passe saisis ne correspondant pas', 'type' => 'warning'));
+
+        return $app->redirect($app['url_generator']->generate('edituser', array('id' => $id)));
+    }
+
+    // Si l'utilisateur est admin, alors il peut changer le mot de passe d'un utilisateur.
+    if ($app['function.isAdmin']) {
+        $app['dao.user']->updatePassword($user_password1, $id);
+        $app['session']->getFlashBag()->add('message', array('content' => 'Le mot de passe de l\'utilisateur a bien
+        été modifié', 'type' => 'success'));
+
+        return $app->redirect($app['url_generator']->generate('admin'));
+    }
+
+    // Si l'utilisateur à supprimer est l'utilisateur actuel, on autorise la suppression.
+    if ($user->getUserId() === $id) {
+        $app['dao.user']->updatePassword($user_password1, $id);
+        $app['session']->getFlashBag()->add('message', array('content' => 'Votre mot de passe a bien été modifié', 'type' => 'success'));
+
+        return $app->redirect($app['url_generator']->generate('home'));
+    }
+
+    $app['session']->getFlashBag()->add('message', array('content' => 'Vous n\'êtes pas autorisé à effectuer cette
+    action', 'type' => 'warning'));
+
+    return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
+})->bind('newpasswordchecker');
