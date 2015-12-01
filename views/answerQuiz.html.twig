@@ -14,19 +14,20 @@
     {% if questions is defined %}
         <div class="row">
             {% for question in questions %}
-                <div class="col-lg-offset-2 col-sm-8 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> {{ question.QuestionText }} </h3>
-                        </div>
-                        {% if question.answers is defined %}
-                            <div class="panel-body">
-                                {% for answer in question.answers %}
-                                    <p><label for="{{ answer.answerId }}">{{ answer.answercontent }} : </label><input name="{{ answer.answerId }}" id="{{ answer.answerId }}" type="radio"></p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> {{ question.QuestionText }} </h3>
                     </div>
+                    {% if question.answers is defined %}
+                        <div class="panel-body">
+                            {% for answer in question.answers %}
+                                <div class="col-lg-6 col-sm-6">
+                                    <label for="{{ answer.answerId }}">{{ answer.answercontent | raw }}</label>
+                                    <input name="{{ question.questionId }}" id="{{ answer.answerId }}" type="radio">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
