@@ -69,11 +69,7 @@ $app->get('/answerQuiz/{id}', function(Request $request, $id) use ($app) {
     return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('answerQuiz');
 
-<<<<<<< HEAD
-$app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) {
-=======
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
->>>>>>> origin/master
     $quiz = $app['dao.quiz']->find($id);
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if ($title != $quiz->getQuizTitle() && !$app['dao.quiz']->titleIsFree($title)) {
