@@ -55,6 +55,20 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
 })->bind('edit/quiz');
 
+$app->get('/answerQuiz/{id}', function(Request $request, $id) use ($app) {
+    $quiz = $app['dao.quiz']->find($id);
+    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+    $questions= array();
+    foreach ($questions_id as $question_id) {
+        $question = $app['dao.question']->find($question_id);
+        if ($question != NULL) {
+            $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+            array_push($questions, $question);
+        }
+    }
+    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'questions' => $questions));
+})->bind('answerQuiz');
+
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $title = htmlspecialchars($request->request->get('quiz_title'));
@@ -66,7 +80,10 @@ $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app)
     $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
     $questions = array();
     foreach ($questions_id as $question_id) {
-        array_push($questions, $app['dao.question']->find($question_id));
+        $question = $app['dao.question']->find($question_id);
+        if ($question != NULL) {
+            array_push($questions, $question);
+        }
     }
     $quiz = $app['dao.quiz']->find($id);
 
@@ -188,7 +205,10 @@ $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) 
     $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
     $questions = array();
     foreach ($questions_id as $question_id) {
-        array_push($questions, $app['dao.question']->find($question_id));
+        $question = $app['dao.question']->find($question_id);
+        if ($question != NULL) {
+            array_push($questions, $question);
+        }
     }
     $question_content = htmlspecialchars($request->request->get('question_text'));
     $answer1 = htmlspecialchars($request->request->get('answer1_content'));
