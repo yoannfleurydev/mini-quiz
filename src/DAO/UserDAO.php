@@ -50,9 +50,9 @@ class UserDAO extends DAO
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $user_login));
     }
 
-    public function verifLogs($username, $password) {
+    public function verifLogs($user_login, $password) {
         $sql = "SELECT * FROM mq_user WHERE user_login=?";
-        $row = $this->getDb()->fetchAssoc($sql, array(htmlspecialchars($username)));
+        $row = $this->getDb()->fetchAssoc($sql, array(htmlspecialchars($user_login)));
 
         return password_verify($password, $row['user_password']);
     }
@@ -84,6 +84,12 @@ class UserDAO extends DAO
         );
 
         $this->getDb()->insert("mq_user", $userData);
+    }
+
+    public function updatePassword($user_password, $user_id) {
+        $pass = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 11));
+
+        $this->getDb()->update("mq_user", array('user_password' => $pass), array('user_id' => $user_id));
     }
 
     /**

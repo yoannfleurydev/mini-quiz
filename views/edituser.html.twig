@@ -6,17 +6,19 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <h3>Profil</h3>
 
-                <form>
+                <form role="form" action="{{ path('newpasswordchecker', {id: user.userId}) }}" method="post">
                     <div class="form-group">
-                        <label for="password1">Nouveau mot de passe</label>
-                        <input type="password" class="form-control" id="password1" placeholder="Nouveau mot de passe">
+                        <label for="user_password1">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="user_password1" name="user_password1"
+                               placeholder="Nouveau mot de passe">
                     </div>
                     <div class="form-group">
-                        <label for="password2">Confirmation mot de passe</label>
-                        <input type="password" class="form-control" id="password2"
+                        <label for="user_password2">Confirmation mot de passe</label>
+                        <input type="password" class="form-control" id="user_password2" name="user_password2"
                                placeholder="Confirmation mot de passe">
                     </div>
                     <button type="submit" class="btn btn-default">Changer le mot de passe</button>
+                    <button type="reset" class="btn btn-default">Effacer</button>
                 </form>
             </div>
         {% endif %}
