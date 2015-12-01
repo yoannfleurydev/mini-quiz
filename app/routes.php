@@ -69,7 +69,11 @@ $app->get('/answerQuiz/{id}', function(Request $request, $id) use ($app) {
     return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'questions' => $questions));
 })->bind('answerQuiz');
 
+<<<<<<< HEAD
 $app->match('/edit/quiz_check/{id}', function(Request $request, $id) use ($app) {
+=======
+$app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
+>>>>>>> origin/master
     $quiz = $app['dao.quiz']->find($id);
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if ($title != $quiz->getQuizTitle() && !$app['dao.quiz']->titleIsFree($title)) {
@@ -122,6 +126,31 @@ $app->get('/delete/user/{id}', function ($id) use ($app) {
 
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
 })->bind('deleteuser');
+
+$app->get('/edit/user/{id}', function ($id) use ($app) {
+    // Si aucun utilisateur n'est connecté, alors on autorise rien.
+    if (null === $user = $app['session']->get('user')) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
+    // Si l'utilisateur est admin, alors il peut modifier un utilisateur.
+    if ($app['function.isAdmin'] || $user->getUserId() === $id) {
+        $quizzes = $app['dao.quiz']->findByAuthor($id);
+        $editUser = $app['dao.user']->find($id);
+
+        return $app['twig']->render('edituser.html.twig', array(
+            'user' => $editUser,
+            'myquizzes' => $quizzes)
+        );
+    }
+
+    $app['session']->getFlashBag()->add('message', array('content' => 'Cette opération ne vous est pas permise', 'type'
+    => 'danger'));
+
+    return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
+})->bind('edituser');
 
 /************* POST ***************/
 $app->post('/login_check', function (Request $request) use ($app) {

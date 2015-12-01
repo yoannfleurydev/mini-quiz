@@ -27,16 +27,4 @@
             {% endif %}
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-2 col-sm-12">
-            <a href="{{ path('edituser', {id: user.userId}) }}" type="button" class="btn btn-primary">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Modifier mon profil
-            </a>
-        </div>
-        <div class="col-lg-2 col-sm-12">
-            <a href="{{  path('deleteuser', {id: user.userId}) }}" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer mon profil
-            </a>
-        </div>
-    </div>
 {% endblock %}

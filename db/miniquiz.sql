@@ -31,15 +31,15 @@ CREATE TABLE IF NOT EXISTS `mq_access` (
   `access_key` varchar(10) NOT NULL,
   `access_name` varchar(40) NOT NULL,
   PRIMARY KEY (`access_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 --
 -- Contenu de la table `mq_access`
 --
 
-INSERT INTO `mq_access` (`access_id`, `access_key`, `access_name`) VALUES
-(1, 'ADMIN', 'Administrateur'),
-(2, 'USER', 'Utilisateur');
+INSERT INTO `mq_access` (`access_key`, `access_name`) VALUES
+('ADMIN', 'Administrateur'),
+('USER', 'Utilisateur');
 
 -- --------------------------------------------------------
 
@@ -48,9 +48,10 @@ INSERT INTO `mq_access` (`access_id`, `access_key`, `access_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `mq_answer` (
-  `answer_id` int(11) NOT NULL,
-  `answer_content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `answer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `answer_content` text NOT NULL,
+  PRIMARY KEY (`answer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `mq_user` (
   `user_password` varchar(80) NOT NULL,
   `user_access_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
