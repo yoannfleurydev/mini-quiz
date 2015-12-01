@@ -106,6 +106,31 @@ $app->get('/delete/user/{id}', function ($id) use ($app) {
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
 })->bind('deleteuser');
 
+$app->get('/edit/user/{id}', function ($id) use ($app) {
+    // Si aucun utilisateur n'est connecté, alors on autorise rien.
+    if (null === $user = $app['session']->get('user')) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
+    // Si l'utilisateur est admin, alors il peut modifier un utilisateur.
+    if ($app['function.isAdmin'] || $user->getUserId() === $id) {
+        $quizzes = $app['dao.quiz']->findByAuthor($id);
+        $editUser = $app['dao.user']->find($id);
+
+        return $app['twig']->render('edituser.html.twig', array(
+            'user' => $editUser,
+            'myquizzes' => $quizzes)
+        );
+    }
+
+    $app['session']->getFlashBag()->add('message', array('content' => 'Cette opération ne vous est pas permise', 'type'
+    => 'danger'));
+
+    return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
+})->bind('edituser');
+
 /************* POST ***************/
 $app->post('/login_check', function (Request $request) use ($app) {
     if ($app['dao.user']->verifLogs($request->request->get('user_login'), $request->request->get('user_password'))) {
