@@ -123,6 +123,43 @@ $app->get('/delete/user/{id}', function ($id) use ($app) {
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
 })->bind('deleteuser');
 
+
+$app->get('/delete/quiz/{id}', function ($id) use ($app) {
+    // Si aucun utilisateur n'est connecté, alors on autorise rien.
+    if (null === $user = $app['session']->get('user')) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
+    // Si l'utilisateur est admin, alors il peut supprimer un quiz.
+    if ($app['function.isAdmin']) {
+        $app['dao.quiz']->deleteId($id);
+        $app['session']->getFlashBag()->add('message', array('content' => 'Le quiz a bien été supprimé', 'type' =>
+            'success'));
+
+        return $app->redirect('/admin');
+    }
+
+    $quiz = $app['dao.quiz']->find($id);
+
+    // Si le quiz à supprimer appartient à l'utilisateur actuel, on autorise la suppression.
+    if ($user->getUserId() === $quiz->getQuizUserId()) {
+        $app['dao.quiz']->deleteId($id);
+        $app['session']->getFlashBag()->add('message', array(
+            'content' => 'Le quiz a bien été supprimé',
+            'type' => 'success')
+        );
+
+        return $app->redirect($app['url_generator']->generate('home'));
+    }
+
+    $app['session']->getFlashBag()->add('message', array('content' => 'Vous n\'êtes pas autorisé à effectuer cette
+    action', 'type' => 'warning'));
+
+    return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
+})->bind('deletequiz');
+
 $app->get('/edit/user/{id}', function ($id) use ($app) {
     // Si aucun utilisateur n'est connecté, alors on autorise rien.
     if (null === $user = $app['session']->get('user')) {
@@ -217,13 +254,14 @@ $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) 
     $questions = array();
     foreach ($questions_id as $question_id) {
         $question = $app['dao.question']->find($question_id);
-        if ($question != NULL) {
+        if ($question != null) {
             array_push($questions, $question);
         }
     }
 
     if ($request->request->get('finish')) {
         $quizzes = $app['dao.quiz']->findAll();
+
         return $app['twig']->render('index.html.twig', array('quizzes' => $quizzes));
     }
 

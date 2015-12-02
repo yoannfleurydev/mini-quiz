@@ -10,7 +10,7 @@
                     </a>
                 </div>
                 <div class="col-lg-6 col-sm-12">
-                    <a href="{{  path('deleteuser', {id: user.userId}) }}" class="btn btn-danger">
+                    <a href="{{ path('deleteuser', {id: user.userId}) }}" class="btn btn-danger" title="Attention, cliquer sur ce bouton est irréversible">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer mon profil
                     </a>
                 </div>
@@ -24,15 +24,19 @@
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingOne">
                                 <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ quiz.quizId }}" aria-expanded="false" aria-controls="collapse{{ quiz.quizId }}">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapse{{ quiz.quizId }}" aria-expanded="false"
+                                       aria-controls="collapse{{ quiz.quizId }}">
                                         <span class="glyphicon glyphicon-question-sign"></span> {{ quiz.quizTitle }}
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapse{{ quiz.quizId }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ quiz.quizId }}">
+                            <div id="collapse{{ quiz.quizId }}" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="heading{{ quiz.quizId }}">
                                 <div class="panel-body">
                                     {{ quiz.quizDescription }}
-                                    <a href="{{ path('edit/quiz', {'id' : quiz.quizId}) }}"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a href="{{ path('edit/quiz', {'id' : quiz.quizId}) }}"><span
+                                                class="glyphicon glyphicon-edit"></span></a>
                                 </div>
                             </div>
                         </div>
