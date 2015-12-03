@@ -35,7 +35,7 @@ $app->get('/users', function () use ($app) {
 $app->get('/logout', function () use ($app) {
     $app['session']->clear();
 
-    return $app['twig']->render('index.html.twig');
+    return $app->redirect('/');
 })->bind('logout');
 
 $app->get('/user/{id}', function ($id) use ($app) {
@@ -193,9 +193,15 @@ $app->post('/login_check', function (Request $request) use ($app) {
         $app['session']->set('user', $user);
         $app['session']->set('connected', array('connected' => true));
 
-        return $app['twig']->render('index.html.twig');
+        return $app->redirect('/');
     } else {
-        return $app['twig']->render('login.html.twig', array('error' => "Mauvaise combinaison d'identifiants"));
+        $app['session']->getFlashBag()->add('message',
+            array(
+                'type' => 'danger',
+                'content' => 'Mauvaise combinaison d\'identifiants.'
+            )
+        );
+        return $app->redirect('/login');
     }
 })->bind('login_check');
 
