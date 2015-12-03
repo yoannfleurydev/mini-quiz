@@ -70,7 +70,7 @@ $app->match('/answerQuiz/{id}/{questionNumber}', function (Request $request, $id
         }
     }
     if ($questionNumber >= count($questions)) {
-        return $app['twig']->render('test.html.twig');
+        return $app['twig']->render('endQuiz.html.twig');
     }
     return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $questions[$questionNumber], 'questionNumber' => $questionNumber));
 })->bind('answerQuiz');
