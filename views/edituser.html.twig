@@ -33,8 +33,11 @@
                                 <h4 class="panel-title">
                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapse{{ quiz.quizId }}" aria-expanded="false"
-                                       aria-controls="collapse{{ quiz.quizId }}">
+                                    aria-controls="collapse{{ quiz.quizId }}">
                                         <span class="glyphicon glyphicon-question-sign"></span> {{ quiz.quizTitle }}
+                                        <a href="{{ path('deletequiz', {'id' : quiz.quizId}) }}" class="btn btn-danger">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
                                     </a>
                                 </h4>
                             </div>
