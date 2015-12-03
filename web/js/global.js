@@ -3,3 +3,9 @@ $(document).ready(function(){
         $(this).fadeOut()
     });
 });
+
+$(document).ready(function(){
+    $(".message").click(function(){
+        $(this).fadeOut()
+    });
+});

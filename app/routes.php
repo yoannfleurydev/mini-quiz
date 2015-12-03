@@ -200,6 +200,34 @@ $app->post('/login_check', function (Request $request) use ($app) {
 })->bind('login_check');
 
 $app->post('/signup_check', function (Request $request) use ($app) {
+    // Si l'identifiant de connexion n'est pas assez grand, on prévient l'utilisateur.
+    if (count($request->request->get('user_login')) < 3) {
+        $app['session']->getFlashBag()->add('message',
+            array(
+                'type' => 'danger',
+                'content' => 'Votre identifiant de connexion doit avoir une longueur minimale de 4 caractères.'
+            )
+        );
+
+        return $app->redirect('/signup');
+    }
+
+    // Si le mot de passe n'est pas assez grand, on prévient l'utilisateur en lui indiquant comment mettre un bon mot
+    // de passe.
+    if (count($request->request->get('user_password')) < 4) {
+        $app['session']->getFlashBag()->add('message',
+            array(
+                'type' => 'danger',
+                'content' => 'Votre mot de passe doit avoir une longueur minimale de 5 caractères. Nous vous
+                conseillons l\'utilisation d\'un mot de passe composé de lettres, majuscules et miniscules ainsi que
+                de caractères numériques et de symboles.'
+            )
+        );
+
+        return $app->redirect('/signup');
+    }
+
+
     //Test if password enter by user are equals
     if ($request->request->get('user_password') !== $request->request->get('user_password2')) {
         return $app['twig']->render('signup.html.twig', array('error' => "Mots de passe non identiques"));
