@@ -55,7 +55,10 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
 })->bind('edit/quiz');
 
-$app->get('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
+$app->match('/answerQuiz/{id}/{questionNumber}', function (Request $request, $id, $questionNumber) use ($app) {
+    if ($request->request->get('next')) {
+        $questionNumber++;
+    }
     $quiz = $app['dao.quiz']->find($id);
     $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
     $questions = array();
@@ -66,8 +69,10 @@ $app->get('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
             array_push($questions, $question);
         }
     }
-
-    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'questions' => $questions));
+    if ($questionNumber >= count($questions)) {
+        return $app['twig']->render('endQuiz.html.twig');
+    }
+    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $questions[$questionNumber], 'questionNumber' => $questionNumber));
 })->bind('answerQuiz');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {

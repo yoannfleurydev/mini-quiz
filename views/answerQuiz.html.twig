@@ -11,9 +11,9 @@
             </div>
         </div>
     </div>
-    {% if questions is defined %}
+    {% if question is defined %}
         <div class="row">
-            {% for question in questions %}
+            <form method="POST" action="{{ path('answerQuiz', {'id' : quiz.quizId, 'questionNumber' : questionNumber}) }}">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"> {{ question.QuestionText }} </h3>
@@ -29,7 +29,8 @@
                         </div>
                     {% endif %}
                 </div>
-            {% endfor %}
+                <input type="submit" name="next" value="suivant" class="btn btn-default">
+            </form>
         </div>
     {% endif %}
 {% endblock %}
