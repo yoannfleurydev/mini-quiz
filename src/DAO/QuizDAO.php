@@ -93,6 +93,10 @@ class QuizDAO extends DAO {
         return $questions;
     }
 
+    public function deleteId($quiz_id) {
+        $this->getDb()->delete('mq_quiz', array('quiz_id' => $quiz_id));
+    }
+
     /**
      * @param $row La ligne de la base de données en tableau PHP
      * @return Quiz L'objet Quiz instancié
