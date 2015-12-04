@@ -70,17 +70,6 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
-    {% if error is defined %}
-        <div id="error" class="row">
-            <div class="col-lg-offset-2 col-sm-8 col-xs-12">
-                <div class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
-                    {{ error }}
-                </div>
-            </div>
-        </div>
-    {% endif %}
     {% for message in app.session.getFlashBag.get('message') %}
         <div id="error" class="row">
             <div class="col-lg-offset-2 col-sm-8 col-xs-12">
