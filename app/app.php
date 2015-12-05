@@ -33,6 +33,11 @@ $app['dao.answer'] = $app->share(function ($app) {
     return new Miniquiz\DAO\AnswerDAO($app['db']);
 });
 
+$app['dao.quizsave'] = $app->share(function ($app) {
+    return new Miniquiz\DAO\QuizSaveDAO($app['db']);
+});
+
+
 $app['function.isAdmin'] = $app->share(function($app) {
     $user = $app['session']->get('user');
     if (isset($user)) {
