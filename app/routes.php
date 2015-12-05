@@ -35,7 +35,7 @@ $app->get('/users', function () use ($app) {
 $app->get('/logout', function () use ($app) {
     $app['session']->clear();
 
-    return $app['twig']->render('index.html.twig');
+    return $app->redirect('/');
 })->bind('logout');
 
 $app->get('/user/{id}', function ($id) use ($app) {
@@ -72,14 +72,18 @@ $app->match('/answerQuiz/{id}/{questionNumber}', function (Request $request, $id
     if ($questionNumber >= count($questions)) {
         return $app['twig']->render('endQuiz.html.twig');
     }
-    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $questions[$questionNumber], 'questionNumber' => $questionNumber));
+    return $app['twig']->render('answerQuiz.html.twig',
+        array('quiz' => $quiz, 'question' => $questions[$questionNumber], 'questionNumber' => $questionNumber));
 })->bind('answerQuiz');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if ($title != $quiz->getQuizTitle() && !$app['dao.quiz']->titleIsFree($title)) {
-        return $app['twig']->render('editquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+        $app['session']->getFlashBag()->add('message'
+            , array('type' => 'danger', 'content' => 'Le titre "' . $title . '" est déjà pris'));
+
+        return $app->redirect('/edit/quiz');
     }
     $description = htmlspecialchars($request->request->get('quiz_description'));
     $app['dao.quiz']->updateQuiz($title, $description, $id);
@@ -193,19 +197,25 @@ $app->post('/login_check', function (Request $request) use ($app) {
         $app['session']->set('user', $user);
         $app['session']->set('connected', array('connected' => true));
 
-        return $app['twig']->render('index.html.twig');
+        return $app->redirect('/');
     } else {
-        return $app['twig']->render('login.html.twig', array('error' => "Mauvaise combinaison d'identifiants"));
+        $app['session']->getFlashBag()->add('message',
+            array(
+                'type' => 'danger',
+                'content' => 'Mauvaise combinaison d\'identifiants.'
+            )
+        );
+        return $app->redirect('/login');
     }
 })->bind('login_check');
 
 $app->post('/signup_check', function (Request $request) use ($app) {
     // Si l'identifiant de connexion n'est pas assez grand, on prévient l'utilisateur.
-    if (count($request->request->get('user_login')) < 3) {
+    if (strlen($request->request->get('user_login')) < 3) {
         $app['session']->getFlashBag()->add('message',
             array(
                 'type' => 'danger',
-                'content' => 'Votre identifiant de connexion doit avoir une longueur minimale de 4 caractères.'
+                'content' => 'Votre identifiant de connexion doit avoir une longueur minimale de 3 caractères.'
             )
         );
 
@@ -214,7 +224,7 @@ $app->post('/signup_check', function (Request $request) use ($app) {
 
     // Si le mot de passe n'est pas assez grand, on prévient l'utilisateur en lui indiquant comment mettre un bon mot
     // de passe.
-    if (count($request->request->get('user_password')) < 4) {
+    if (strlen($request->request->get('user_password')) < 4) {
         $app['session']->getFlashBag()->add('message',
             array(
                 'type' => 'danger',
@@ -242,7 +252,10 @@ $app->post('/signup_check', function (Request $request) use ($app) {
 
     //test if the login is not already taken
     if (!$app['dao.user']->usernameIsFree($request->request->get('user_login'))) {
-        return $app['twig']->render('signup.html.twig', array('error' => "Le pseudo " . $request->request->get('username') . " déjà utilisé"));
+        $app['session']->getFlashBag()->add('message'
+            , array('type' => 'danger', 'content' => "Le pseudo " . $request->request->get('username') . " déjà utilisé"));
+
+        return $app->redirect('/signup');
     }
 
     //save the user in the database
@@ -263,7 +276,10 @@ $app->post('/signup_check_username', function (Request $request) use ($app) {
 $app->post('/newquiz_check', function (Request $request) use ($app) {
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if (!$app['dao.quiz']->titleIsFree($title)) {
-        return $app['twig']->render('newquiz.html.twig', array('error' => 'Le titre "' . $title . '" est déjà pris'));
+        $app['session']->getFlashBag()->add('message'
+            , array('type' => 'danger', 'content' => 'Le titre "' . $title . '" est déjà pris'));
+
+        return $app->redirect('/new/quiz');
     }
     $description = htmlspecialchars($request->request->get('quiz_description'));
     $quizId = $app['dao.quiz']->saveQuiz($title, $description, $app['session']->get('user')->getUserId());
