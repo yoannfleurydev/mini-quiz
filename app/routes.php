@@ -228,9 +228,16 @@ $app->post('/signup_check', function (Request $request) use ($app) {
     }
 
 
-    //Test if password enter by user are equals
+    // Si les deux mots de passe sont différent, on prévient l'utilisateur et on ne crée pas son compte.
     if ($request->request->get('user_password') !== $request->request->get('user_password2')) {
-        return $app['twig']->render('signup.html.twig', array('error' => "Mots de passe non identiques"));
+        $app['session']->getFlashBag()->add('message',
+            array(
+                'type' => 'danger',
+                'content' => 'Les deux mots de passe ne correspondent pas.'
+            )
+        );
+
+        return $app->redirect('/signup');
     }
 
     //test if the login is not already taken
