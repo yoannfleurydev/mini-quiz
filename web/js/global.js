@@ -1,11 +1,9 @@
 $(document).ready(function(){
-    $("#error").click(function(){
+    $(".message").click(function(){
         $(this).fadeOut()
     });
 });
 
-$(document).ready(function(){
-    $(".message").click(function(){
-        $(this).fadeOut()
-    });
+$(function () {
+    $('[data-toggle="popover"]').popover()
 });
