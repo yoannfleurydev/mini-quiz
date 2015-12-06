@@ -53,7 +53,7 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
 
     return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
-})->bind('edit/quiz');
+})->bind('editquiz');
 
 $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
@@ -192,8 +192,12 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
     // Si l'utilisateur est admin, alors il peut supprimer un quiz.
     if ($app['function.isAdmin']) {
         $app['dao.quiz']->deleteId($id);
-        $app['session']->getFlashBag()->add('message', array('content' => 'Le quiz a bien été supprimé', 'type' =>
-            'success'));
+        $app['session']->getFlashBag()->add('message',
+            array(
+                'content' => 'Le quiz a bien été supprimé',
+                'type' => 'success'
+            )
+        );
 
         return $app->redirect('/admin');
     }
