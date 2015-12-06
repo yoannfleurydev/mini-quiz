@@ -4,7 +4,7 @@
     <div class="row">
         {% if user is defined %}
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <h3>Profil</h3>
+                <h3>Changement de mot de passe</h3>
 
                 <form role="form" action="{{ path('newpasswordchecker', {id: user.userId}) }}" method="post">
                     <div class="form-group">
@@ -13,45 +13,43 @@
                                placeholder="Nouveau mot de passe">
                     </div>
                     <div class="form-group">
-                        <label for="user_password2">Confirmation mot de passe</label>
+                        <label for="user_password2">Confirmation du nouveau mot de passe</label>
                         <input type="password" class="form-control" id="user_password2" name="user_password2"
                                placeholder="Confirmation mot de passe">
                     </div>
-                    <button type="submit" class="btn btn-default">Changer le mot de passe</button>
+                    <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
                     <button type="reset" class="btn btn-default">Effacer</button>
                 </form>
             </div>
         {% endif %}
         {% if myquizzes is defined and myquizzes is not empty %}
-            <div class="col-sm-12 col-xs-12 col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <h3>Mes Quiz</h3>
-
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <ul class="list-unstyled">
                     {% for quiz in myquizzes %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapse{{ quiz.quizId }}" aria-expanded="false"
-                                    aria-controls="collapse{{ quiz.quizId }}">
-                                        <span class="glyphicon glyphicon-question-sign"></span> {{ quiz.quizTitle }}
-                                        <a href="{{ path('deletequiz', {'id' : quiz.quizId}) }}" class="btn btn-danger">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </a>
-                                    </a>
-                                </h4>
+                        <li>
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-8">
+                                <button type="button" class="btn btn-default" data-trigger="focus"
+                                        data-container="body"
+                                        data-toggle="popover" data-placement="top"
+                                        data-content="{{ quiz.quizDescription }}">
+                                    {{ quiz.quizTitle }}
+                                </button>
                             </div>
-                            <div id="collapse{{ quiz.quizId }}" class="panel-collapse collapse" role="tabpanel"
-                                 aria-labelledby="heading{{ quiz.quizId }}">
-                                <div class="panel-body">
-                                    {{ quiz.quizDescription }}
-                                    <a href="{{ path('edit/quiz', {'id' : quiz.quizId}) }}"><span
-                                                class="glyphicon glyphicon-edit"></span></a>
-                                </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                <a class="btn btn-primary" href="{{ path('editquiz', {'id' : quiz.quizId}) }}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
                             </div>
-                        </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+                                <a href="{{ path('deletequiz', {'id' : quiz.quizId}) }}"
+                                   class="btn btn-danger" title="Supprimer le quiz {{ quiz.quizTitle }}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </div>
+                        </li>
                     {% endfor %}
-                </div>
+                </ul>
             </div>
         {% endif %}
     </div>

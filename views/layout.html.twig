@@ -71,7 +71,7 @@
 </nav>
 <div class="container">
     {% for message in app.session.getFlashBag.get('message') %}
-        <div id="error" class="row">
+        <div class="row message">
             <div class="col-lg-offset-2 col-sm-8 col-xs-12">
                 <div class="alert alert-{{ message.type }}" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
