@@ -13,7 +13,7 @@
     </div>
     {% if question is defined %}
         <div class="row">
-            <form method="POST" action="{{ path('answerQuiz', {'id' : quiz.quizId, 'questionNumber' : questionNumber}) }}">
+            <form method="POST" action="{{ path('answerQuiz', {'id' : quiz.quizId}) }}">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"> {{ question.QuestionText }} </h3>
@@ -23,7 +23,7 @@
                             {% for answer in question.answers %}
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="{{ answer.answerId }}">{{ answer.answercontent | raw }}</label>
-                                    <input name="{{ question.questionId }}" id="{{ answer.answerId }}" type="radio">
+                                    <input name="answer" id="{{ answer.answerId }}" value="{{ answer.answerId }}" type="radio">
                                 </div>
                             {% endfor %}
                         </div>

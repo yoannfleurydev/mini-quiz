@@ -31,7 +31,9 @@
                             <div id="collapse{{ quiz.quizId }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ quiz.quizId }}">
                                 <div class="panel-body">
                                     <p>{{ quiz.quizDescription }}</p>
-                                    <p><a class="btn btn-default" href="{{ path('answerQuiz', {'id' : quiz.quizId, 'questionNumber' : 0}) }}">Répondre</a></p>
+                                    {% if app.session.get("connected") %}
+                                        <p><a class="btn btn-default" href="{{ path('answerQuiz', {'id' : quiz.quizId}) }}">Répondre</a></p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

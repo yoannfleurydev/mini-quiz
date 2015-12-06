@@ -5,14 +5,14 @@ namespace Miniquiz\DAO;
 use Miniquiz\Domain\QuizSave;
 
 class QuizSaveDAO extends DAO {
-    public function find($id) {
-        $sql = "SELECT * FROM mq_quizsave WHERE quiz_id=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($id));
+    public function find($id, $idUser) {
+        $sql = "SELECT * FROM mq_quizsave WHERE quiz_id=? AND user_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id, $idUser));
 
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new \Exception("No mq_quiz matching id " . $id);
+            return null;
     }
 
     public function findAll() {
@@ -39,7 +39,7 @@ class QuizSaveDAO extends DAO {
         return $quiz;
     }
 
-    public function saveQuiz($quiz_id, $user_id, $quiz_save) {
+    public function addSaveQuiz($quiz_id, $user_id, $quiz_save) {
         $quiz_save_content = json_encode($quiz_save);
         $quizData = array (
             'quiz_id' => $quiz_id,
@@ -47,12 +47,11 @@ class QuizSaveDAO extends DAO {
             'quiz_save_content' => $quiz_save_content
         );
 
-
         $this->getDb()->insert("mq_quizsave", $quizData);
         return $this->getDb()->lastInsertId();
     }
 
-    public function updateQuiz($quiz_id, $user_id, $quiz_save) {
+    public function updateSaveQuiz($quiz_id, $user_id, $quiz_save) {
         $quiz_save_content = json_encode($quiz_save);
         $quizData = array (
             'quiz_save_content' => $quiz_save_content
@@ -75,9 +74,9 @@ class QuizSaveDAO extends DAO {
         $quiz->setQuizSaveId($row['quiz_save_id']);
         $quiz->setQuizId($row['quiz_id']);
         $quiz->setUserId($row['user_id']);
-        $json_object = json_decode($row['quiz_save_content']);
+        $json_object = json_decode($row['quiz_save_content'], true);
         $quiz->setQuestions($json_object['questions']);
-        $quiz->setAnswers($json_object['answers']);
+        $quiz->setAnswers($json_object['answer']);
         return $quiz;
     }
 }

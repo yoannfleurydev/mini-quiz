@@ -55,25 +55,73 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
 })->bind('edit/quiz');
 
-$app->match('/answerQuiz/{id}/{questionNumber}', function (Request $request, $id, $questionNumber) use ($app) {
-    if ($request->request->get('next')) {
-        $questionNumber++;
-    }
+$app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
-    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
-    $questions = array();
-    foreach ($questions_id as $question_id) {
-        $question = $app['dao.question']->find($question_id);
-        if ($question != null) {
-            $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
-            array_push($questions, $question);
+    $user = $app['session']->get('user');
+    $userId = $user->getUserId();
+    $quizsave = $app['dao.quizsave']->find($id, $userId);
+    if ($request->request->get('next')) {
+        $tmpTabQuest = $quizsave->getQuestions();
+        $questions = array();
+        $cpt = 0;
+        foreach ($tmpTabQuest as $question) {
+            if ($cpt != 0) {
+                array_push($questions, $question);
+            }
+            $cpt++;
+        }
+        $answers = $quizsave->getAnswers();
+        array_push($answers, $request->request->get('answer'));
+        $quiz_save = array (
+            'quiz_id' => $id,
+            'user_id' => $userId,
+            'questions' => $questions,
+            'answer' => $answers,
+        );
+        $app['dao.quizsave']->updateSaveQuiz($id, $userId, $quiz_save);
+    }
+    //var_dump($quizsave);
+    if($quizsave === null) {
+        var_dump("test");
+        $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+
+        $questions = array();
+        foreach ($questions_id as $question_id) {
+            $question = $app['dao.question']->find($question_id);
+            if ($question != null) {
+                $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+                array_push($questions, $question);
+            }
+        }
+        $quiz_save = array (
+            'quiz_id' => $id,
+            'user_id' => $userId,
+            'questions' => $questions_id,
+            'answer' => array(),
+        );
+
+        $app['dao.quizsave']->addSaveQuiz($id, $userId, $quiz_save);
+    } else {
+        $questions_id = $quizsave->getQuestions();
+
+        $questions = array();
+        foreach ($questions_id as $question_id) {
+            $question = $app['dao.question']->find($question_id);
+            if ($question != null) {
+                $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+                array_push($questions, $question);
+            }
         }
     }
-    if ($questionNumber >= count($questions)) {
+    if (count($questions) == 0) {
         return $app['twig']->render('endQuiz.html.twig');
+    } else {
+        $question = $questions[0];
     }
+
+
     return $app['twig']->render('answerQuiz.html.twig',
-        array('quiz' => $quiz, 'question' => $questions[$questionNumber], 'questionNumber' => $questionNumber));
+        array('quiz' => $quiz, 'question' => $question));
 })->bind('answerQuiz');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
