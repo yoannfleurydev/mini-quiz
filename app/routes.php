@@ -244,7 +244,7 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
             'type' => 'success')
         );
 
-        return $app->redirect($app['url_generator']->generate('home'));
+        return $app->redirect($app['url_generator']->generate('user', array('id' => $user->getUserId())));
     }
 
     $app['session']->getFlashBag()->add('message', array('content' => 'Vous n\'êtes pas autorisé à effectuer cette
