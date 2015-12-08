@@ -73,26 +73,28 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     $userId = $user->getUserId();
     $quizsave = $app['dao.quizsave']->find($id, $userId);
     if ($request->request->get('next')) {
-        $tmpTabQuest = $quizsave->getQuestions();
-        $questions = array();
-        $cpt = 0;
-        foreach ($tmpTabQuest as $question) {
-            if ($cpt != 0) {
-                array_push($questions, $question);
+        if (in_array($app['session']->get('questionCurr')->getQuestionId(), $quizsave->getQuestions())) {
+            $tmpTabQuest = $quizsave->getQuestions();
+            $questions = array();
+            $cpt = 0;
+            foreach ($tmpTabQuest as $question) {
+                if ($cpt != 0) {
+                    array_push($questions, $question);
+                }
+                $cpt++;
             }
-            $cpt++;
+            $answers = $quizsave->getAnswers();
+            array_push($answers, $request->request->get('answer'));
+            $quiz_save = array(
+                'quiz_id' => $id,
+                'user_id' => $userId,
+                'questions' => $questions,
+                'answer' => $answers,
+            );
+            $quizsave->setQuestions($questions);
+            $quizsave->setAnswers($answers);
+            $app['dao.quizsave']->updateSaveQuiz($id, $userId, $quiz_save);
         }
-        $answers = $quizsave->getAnswers();
-        array_push($answers, $request->request->get('answer'));
-        $quiz_save = array (
-            'quiz_id' => $id,
-            'user_id' => $userId,
-            'questions' => $questions,
-            'answer' => $answers,
-        );
-        $quizsave->setQuestions($questions);
-        $quizsave->setAnswers($answers);
-        $app['dao.quizsave']->updateSaveQuiz($id, $userId, $quiz_save);
     }
 
     if($quizsave === null) {
@@ -149,6 +151,7 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
             array("quizTitle" => $quiz->getQuizTitle(), "nbAnswers" => $nbAnswers, "nbGoodAnswers" => $nbGoodAnswers));
     } else {
         $question = $questions[0];
+        $app['session']->set('questionCurr', $question);
     }
 
 
