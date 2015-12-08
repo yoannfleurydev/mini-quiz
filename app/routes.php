@@ -78,11 +78,12 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
             'questions' => $questions,
             'answer' => $answers,
         );
+        $quizsave->setQuestions($questions);
+        $quizsave->setAnswers($answers);
         $app['dao.quizsave']->updateSaveQuiz($id, $userId, $quiz_save);
     }
-    //var_dump($quizsave);
+
     if($quizsave === null) {
-        var_dump("test");
         $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
 
         $questions = array();
@@ -114,7 +115,26 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
         }
     }
     if (count($questions) == 0) {
-        return $app['twig']->render('endQuiz.html.twig');
+        $quiz = $app['dao.quiz']->find($id);
+        $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+        foreach ($questions_id as $question_id) {
+            $question = $app['dao.question']->find($question_id);
+            if ($question != null) {
+                $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+                array_push($questions, $question);
+            }
+        }
+        $nbAnswers = count($quizsave->getAnswers());
+        $cpt = 0;
+        $nbGoodAnswers = 0;
+        foreach($questions as $question ) {
+            if ($question->getQuestionGoodAnswer() == $quizsave->getAnswers()[$cpt]) {
+                $nbGoodAnswers++;
+            }
+            $cpt++;
+        }
+        return $app['twig']->render('endQuiz.html.twig',
+            array("quizTitle" => $quiz->getQuizTitle(), "nbAnswers" => $nbAnswers, "nbGoodAnswers" => $nbGoodAnswers));
     } else {
         $question = $questions[0];
     }
@@ -314,7 +334,10 @@ $app->post('/signup_check', function (Request $request) use ($app) {
     $app['session']->set('user', $user);
     $app['session']->set('connected', array('connected' => true));
 
-    return $app['twig']->render('index.html.twig');
+    $app['session']->getFlashBag()->add('message'
+        , array('type' => 'success', 'content' => "Votre compte a bien été initialisé"));
+
+    return $app->redirect('/');
 })->bind('signup_check');
 
 $app->post('/signup_check_username', function (Request $request) use ($app) {
@@ -338,19 +361,20 @@ $app->post('/newquiz_check', function (Request $request) use ($app) {
 
 $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) {
     $question_content = htmlspecialchars($request->request->get('question_text'));
-    $answer1 = $request->request->get('answer1_content');
-    $answer2 = $request->request->get('answer2_content');
-    $answer3 = $request->request->get('answer3_content');
-    $answer4 = $request->request->get('answer4_content');
-    $idQuestion = $app['dao.question']->saveQuestion($question_content, $request->request->get('answer_is_good'));
-    $idAnswer1 = $app['dao.answer']->saveAnswer($answer1);
-    $app['dao.question']->addAnswer($idQuestion, $idAnswer1);
-    $idAnswer2 = $app['dao.answer']->saveAnswer($answer2);
-    $app['dao.question']->addAnswer($idQuestion, $idAnswer2);
-    $idAnswer3 = $app['dao.answer']->saveAnswer($answer3);
-    $app['dao.question']->addAnswer($idQuestion, $idAnswer3);
-    $idAnswer4 = $app['dao.answer']->saveAnswer($answer4);
-    $app['dao.question']->addAnswer($idQuestion, $idAnswer4);
+
+    $answersContent = array();
+    $idAnswers = array();
+    for($cpt = 1; $cpt < 5 ; $cpt++) {
+        $tmp = $request->request->get('answer' . $cpt . '_content');
+        array_push($answersContent, $tmp);
+        array_push($idAnswers, $app['dao.answer']->saveAnswer($tmp));
+    }
+    $goodAnswer = $idAnswers[$request->request->get('answer_is_good')];
+    $idQuestion = $app['dao.question']->saveQuestion($question_content, $goodAnswer);
+
+    foreach($idAnswers as $idAnswer) {
+        $app['dao.question']->addAnswer($idQuestion, $idAnswer);
+    }
     $app['dao.quiz']->addQuestion($idQuestion, $id);
 
     $quiz = $app['dao.quiz']->find($id);
