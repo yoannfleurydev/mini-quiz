@@ -152,11 +152,12 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     } else {
         $question = $questions[0];
         $app['session']->set('questionCurr', $question);
+        $totalQuestion = count($app['dao.quiz']->getQuestionByQuiz($id));
+        $progress = floor((($totalQuestion - count($questions)) / $totalQuestion) * 100);
     }
 
-
     return $app['twig']->render('answerQuiz.html.twig',
-        array('quiz' => $quiz, 'question' => $question));
+        array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
 })->bind('answerQuiz');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
