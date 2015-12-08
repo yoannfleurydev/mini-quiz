@@ -50,9 +50,21 @@ $app->get('/new/quiz', function () use ($app) {
 })->bind('newquiz');
 
 $app->get('/edit/quiz/{id}', function ($id) use ($app) {
+    // Si aucun utilisateur n'est connecté, alors on autorise rien.
+    if (null === $user = $app['session']->get('user')) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
     $quiz = $app['dao.quiz']->find($id);
 
-    return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
+    // Si l'utilisateur est admin, alors il peut editer un quiz.
+    if ($app['function.isAdmin'] || $user->getUserId() === $quiz->getQuizUserId()) {
+        $quiz = $app['dao.quiz']->find($id);
+
+        return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
+    }
 })->bind('editquiz');
 
 $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
