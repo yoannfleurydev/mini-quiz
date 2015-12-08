@@ -31,40 +31,32 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if app.session.get("connected") %}
                     <li><a href="{{ path('newquiz') }}" title="Nouveau quiz">Nouveau quiz</a></li>
-                {% endif %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        {% if app.session.get("connected") %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
                             {{ app.session.get("user").userlogin }}
-                        {% else %}
-                            Non connecté
-                        {% endif %}
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        {% if app.session.get("connected") %}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
                             <li>
                                 <a href="{{ path('user', {'id': app.session.get("user").userId}) }}"
                                    title="Accéder à mon profil">
                                     Mon profil</a>
                             </li>
                             {% if app.session.get('user').userAccessId == 1 %}{#1 est l'id d'un admin#}
-                            <li>
-                                <a href="{{ path('admin') }}" title="Administration">Administration</a>
-                            </li>
+                                <li>
+                                    <a href="{{ path('admin') }}" title="Administration">Administration</a>
+                                </li>
                             {% endif %}
                             <li role="separator" class="divider"></li>
                             <li>
                                 <a href="{{ path('logout') }}" title="Se déconnecter">Déconnexion</a>
                             </li>
-
-                        {% else %}
-                            <li><a href="{{ path('login') }}" title="Se connecter">Connexion</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{ path('signup') }}" title="S'inscrire">Inscription</a></li>
-                        {% endif %}
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{{ path('login') }}" title="Se connecter">Connexion</a></li>
+                    <li><a href="{{ path('signup') }}" title="S'inscrire">Inscription</a></li>
+                {% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
