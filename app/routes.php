@@ -155,11 +155,60 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     } else {
         $question = $questions[0];
         $app['session']->set('questionCurr', $question);
+        $totalQuestion = count($app['dao.quiz']->getQuestionByQuiz($id));
+        $progress = floor((($totalQuestion - count($questions)) / $totalQuestion) * 100);
+    }
+    
+    return $app['twig']->render('answerQuiz.html.twig',
+        array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
+})->bind('answerQuiz')->assert('id', '\d+');
+
+$app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
+    $quiz = $app['dao.quiz']->find($id);
+    $quizsaves = $app['dao.quizsave']->findByQuiz($id);
+
+    $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+    $questions = array();
+    foreach ($questions_id as $question_id) {
+        $question = $app['dao.question']->find($question_id);
+        if ($question != null) {
+            $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+            array_push($questions, $question);
+        }
     }
 
-
-    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $question));
-})->bind('answerQuiz')->assert('id', '\d+');
+    $tabGoodAnswer = array();
+    $tabNbAnswer = array();
+    $nbTotalGoodAnswer = 0;
+    $nbTotalAnswer = 0;
+    $nbSuccesTest = 0;
+    foreach ($questions as $question) {
+        $nb = 0;
+        $nbAnswer = 0;
+        foreach ($quizsaves as $quizsave) {
+            $nbAnswer++;
+            $answers = $quizsave->getAnswers();
+            foreach($answers as $answer) {
+                if ($question->getQuestionGoodAnswer() == $answer) {
+                    $nb++;
+                }
+            }
+        }
+        $nbTotalGoodAnswer += $nb;
+        $nbTotalAnswer += $nbAnswer;
+        if ($nb > $nbAnswer / 2) {
+            $nbSuccesTest++;
+        }
+        $tabGoodAnswer[$question->getQuestionText()] = $nb;
+        $tabNbAnswer[$question->getQuestionText()] = $nbAnswer;
+    }
+    $nbSuccesTest = ($nbSuccesTest / $nbTotalAnswer) * 100;
+    $quizAverage = ($nbTotalGoodAnswer / $nbTotalAnswer) * 100;
+    return $app['twig']->render('statsQuiz.html.twig',
+        array("questions" => $questions, "tabGoodAnswer" => $tabGoodAnswer
+        , "tabNbAnswer" => $tabNbAnswer, "quiz" => $quiz, "quizAverage" => $quizAverage
+        , "avergaeSuccesQuiz" => $nbSuccesTest));
+})->bind('statsQuiz');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);

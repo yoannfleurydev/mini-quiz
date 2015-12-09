@@ -1,0 +1,52 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-body text-center">
+                    <h3>Quiz {{ quiz.quizTitle }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-condensed">
+                        <caption>Liste des questions</caption>
+                        <thead>
+                        <tr>
+                            <th>Intitulé</th>
+                            <th class="text-center">Nombre de bonnes réponses</th>
+                            <th class="text-center">Nombre réponses</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for question in questions %}
+                            <tr>
+                                <td>{{ question.questionText }}</td>
+                                <td class="text-center">{{ tabGoodAnswer[question.questionText] }}</td>
+                                <td class="text-center">{{ tabNbAnswer[question.questionText] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p class="text-center">
+                        La moyenne du quiz est de {{ quizAverage }}% de bonnes réponses.
+                    </p>
+                    <p class="text-center">
+                        {{ avergaeSuccesQuiz }}% des utilisateurs on eu la moyenne (nombre de bonne réponses au dessus de la moitié du nombre de questions).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
