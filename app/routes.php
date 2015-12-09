@@ -24,13 +24,13 @@ $app->get('/quiz/{id}', function ($id) use ($app) {
     //$app['dao.quiz']->find($id);
 
     return $app['twig']->render('quiz_id.html.twig');
-});
+})->assert('id', '\d+');
 
 $app->get('/users', function () use ($app) {
     $users = $app['dao.user']->findAll();
 
     return $app['twig']->render('users.html.twig', array('users' => $users));
-})->bind('users');
+})->bind('users')->assert('id', '\d+');
 
 $app->get('/logout', function () use ($app) {
     $app['session']->clear();
@@ -39,11 +39,24 @@ $app->get('/logout', function () use ($app) {
 })->bind('logout');
 
 $app->get('/user/{id}', function ($id) use ($app) {
+    if (null === $user = $app['session']->get('user')) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
+    if ($app['session']->get('user')->getUserId() !== $id) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
+    }
+
     $user = $app['dao.user']->find($id);
+
     $myquizzes = $app['dao.quiz']->findByAuthor($id);
 
     return $app['twig']->render('user.html.twig', array('user' => $user, 'myquizzes' => $myquizzes));
-})->bind('user');
+})->bind('user')->assert('id', '\d+');
 
 $app->get('/new/quiz', function () use ($app) {
     return $app['twig']->render('newquiz.html.twig');
@@ -59,13 +72,13 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
 
     $quiz = $app['dao.quiz']->find($id);
 
-    // Si l'utilisateur est admin, alors il peut editer un quiz.
+    // Si l'utilisateur est admin, alors il peut editer un quiz, il peut également si c'est l'auteur du quiz.
     if ($app['function.isAdmin'] || $user->getUserId() === $quiz->getQuizUserId()) {
         $quiz = $app['dao.quiz']->find($id);
 
         return $app['twig']->render('editquiz.html.twig', array('quiz' => $quiz));
     }
-})->bind('editquiz');
+})->bind('editquiz')->assert('id', '\d+');
 
 $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
@@ -85,19 +98,14 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
             }
             $answers = $quizsave->getAnswers();
             array_push($answers, $request->request->get('answer'));
-            $quiz_save = array(
-                'quiz_id' => $id,
-                'user_id' => $userId,
-                'questions' => $questions,
-                'answer' => $answers,
-            );
+            $quiz_save = array('quiz_id' => $id, 'user_id' => $userId, 'questions' => $questions, 'answer' => $answers,);
             $quizsave->setQuestions($questions);
             $quizsave->setAnswers($answers);
             $app['dao.quizsave']->updateSaveQuiz($id, $userId, $quiz_save);
         }
     }
 
-    if($quizsave === null) {
+    if ($quizsave === null) {
         $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
 
         $questions = array();
@@ -108,12 +116,7 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
                 array_push($questions, $question);
             }
         }
-        $quiz_save = array (
-            'quiz_id' => $id,
-            'user_id' => $userId,
-            'questions' => $questions_id,
-            'answer' => array(),
-        );
+        $quiz_save = array('quiz_id' => $id, 'user_id' => $userId, 'questions' => $questions_id, 'answer' => array(),);
 
         $app['dao.quizsave']->addSaveQuiz($id, $userId, $quiz_save);
     } else {
@@ -141,30 +144,28 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
         $nbAnswers = count($quizsave->getAnswers());
         $cpt = 0;
         $nbGoodAnswers = 0;
-        foreach($questions as $question ) {
+        foreach ($questions as $question) {
             if ($question->getQuestionGoodAnswer() == $quizsave->getAnswers()[$cpt]) {
                 $nbGoodAnswers++;
             }
             $cpt++;
         }
-        return $app['twig']->render('endQuiz.html.twig',
-            array("quizTitle" => $quiz->getQuizTitle(), "nbAnswers" => $nbAnswers, "nbGoodAnswers" => $nbGoodAnswers));
+
+        return $app['twig']->render('endQuiz.html.twig', array("quizTitle" => $quiz->getQuizTitle(), "nbAnswers" => $nbAnswers, "nbGoodAnswers" => $nbGoodAnswers));
     } else {
         $question = $questions[0];
         $app['session']->set('questionCurr', $question);
     }
 
 
-    return $app['twig']->render('answerQuiz.html.twig',
-        array('quiz' => $quiz, 'question' => $question));
-})->bind('answerQuiz');
+    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $question));
+})->bind('answerQuiz')->assert('id', '\d+');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if ($title != $quiz->getQuizTitle() && !$app['dao.quiz']->titleIsFree($title)) {
-        $app['session']->getFlashBag()->add('message'
-            , array('type' => 'danger', 'content' => 'Le titre "' . $title . '" est déjà pris'));
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Le titre "' . $title . '" est déjà pris'));
 
         return $app->redirect('/edit/quiz');
     }
@@ -181,7 +182,7 @@ $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app)
     $quiz = $app['dao.quiz']->find($id);
 
     return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
-})->bind('edit/quiz_check');
+})->bind('edit/quiz_check')->assert('id', '\d+');
 
 $app->get('/delete/user/{id}', function ($id) use ($app) {
     // Si aucun utilisateur n'est connecté, alors on autorise rien.
@@ -213,7 +214,7 @@ $app->get('/delete/user/{id}', function ($id) use ($app) {
     action', 'type' => 'warning'));
 
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
-})->bind('deleteuser');
+})->bind('deleteuser')->assert('id', '\d+');
 
 
 $app->get('/delete/quiz/{id}', function ($id) use ($app) {
@@ -227,12 +228,7 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
     // Si l'utilisateur est admin, alors il peut supprimer un quiz.
     if ($app['function.isAdmin']) {
         $app['dao.quiz']->deleteId($id);
-        $app['session']->getFlashBag()->add('message',
-            array(
-                'content' => 'Le quiz a bien été supprimé',
-                'type' => 'success'
-            )
-        );
+        $app['session']->getFlashBag()->add('message', array('content' => 'Le quiz a bien été supprimé', 'type' => 'success'));
 
         return $app->redirect('/admin');
     }
@@ -242,10 +238,7 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
     // Si le quiz à supprimer appartient à l'utilisateur actuel, on autorise la suppression.
     if ($user->getUserId() === $quiz->getQuizUserId()) {
         $app['dao.quiz']->deleteId($id);
-        $app['session']->getFlashBag()->add('message', array(
-            'content' => 'Le quiz a bien été supprimé',
-            'type' => 'success')
-        );
+        $app['session']->getFlashBag()->add('message', array('content' => 'Le quiz a bien été supprimé', 'type' => 'success'));
 
         return $app->redirect($app['url_generator']->generate('user', array('id' => $user->getUserId())));
     }
@@ -254,7 +247,7 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
     action', 'type' => 'warning'));
 
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
-})->bind('deletequiz');
+})->bind('deletequiz')->assert('id', '\d+');
 
 $app->get('/edit/user/{id}', function ($id) use ($app) {
     // Si aucun utilisateur n'est connecté, alors on autorise rien.
@@ -275,7 +268,7 @@ $app->get('/edit/user/{id}', function ($id) use ($app) {
     $app['session']->getFlashBag()->add('message', array('content' => 'Cette opération ne vous est pas permise', 'type' => 'danger'));
 
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
-})->bind('edituser');
+})->bind('edituser')->assert('id', '\d+');
 
 /************* POST ***************/
 $app->post('/login_check', function (Request $request) use ($app) {
@@ -286,12 +279,8 @@ $app->post('/login_check', function (Request $request) use ($app) {
 
         return $app->redirect('/');
     } else {
-        $app['session']->getFlashBag()->add('message',
-            array(
-                'type' => 'danger',
-                'content' => 'Mauvaise combinaison d\'identifiants.'
-            )
-        );
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Mauvaise combinaison d\'identifiants.'));
+
         return $app->redirect('/login');
     }
 })->bind('login_check');
@@ -299,12 +288,7 @@ $app->post('/login_check', function (Request $request) use ($app) {
 $app->post('/signup_check', function (Request $request) use ($app) {
     // Si l'identifiant de connexion n'est pas assez grand, on prévient l'utilisateur.
     if (strlen($request->request->get('user_login')) < 3) {
-        $app['session']->getFlashBag()->add('message',
-            array(
-                'type' => 'danger',
-                'content' => 'Votre identifiant de connexion doit avoir une longueur minimale de 3 caractères.'
-            )
-        );
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Votre identifiant de connexion doit avoir une longueur minimale de 3 caractères.'));
 
         return $app->redirect('/signup');
     }
@@ -312,14 +296,9 @@ $app->post('/signup_check', function (Request $request) use ($app) {
     // Si le mot de passe n'est pas assez grand, on prévient l'utilisateur en lui indiquant comment mettre un bon mot
     // de passe.
     if (strlen($request->request->get('user_password')) < 4) {
-        $app['session']->getFlashBag()->add('message',
-            array(
-                'type' => 'danger',
-                'content' => 'Votre mot de passe doit avoir une longueur minimale de 5 caractères. Nous vous
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Votre mot de passe doit avoir une longueur minimale de 5 caractères. Nous vous
                 conseillons l\'utilisation d\'un mot de passe composé de lettres, majuscules et miniscules ainsi que
-                de caractères numériques et de symboles.'
-            )
-        );
+                de caractères numériques et de symboles.'));
 
         return $app->redirect('/signup');
     }
@@ -327,20 +306,14 @@ $app->post('/signup_check', function (Request $request) use ($app) {
 
     // Si les deux mots de passe sont différent, on prévient l'utilisateur et on ne crée pas son compte.
     if ($request->request->get('user_password') !== $request->request->get('user_password2')) {
-        $app['session']->getFlashBag()->add('message',
-            array(
-                'type' => 'danger',
-                'content' => 'Les deux mots de passe ne correspondent pas.'
-            )
-        );
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Les deux mots de passe ne correspondent pas.'));
 
         return $app->redirect('/signup');
     }
 
     //test if the login is not already taken
     if (!$app['dao.user']->usernameIsFree($request->request->get('user_login'))) {
-        $app['session']->getFlashBag()->add('message'
-            , array('type' => 'danger', 'content' => "Le pseudo " . $request->request->get('username') . " déjà utilisé"));
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => "Le pseudo " . $request->request->get('username') . " déjà utilisé"));
 
         return $app->redirect('/signup');
     }
@@ -353,8 +326,7 @@ $app->post('/signup_check', function (Request $request) use ($app) {
     $app['session']->set('user', $user);
     $app['session']->set('connected', array('connected' => true));
 
-    $app['session']->getFlashBag()->add('message'
-        , array('type' => 'success', 'content' => "Votre compte a bien été initialisé"));
+    $app['session']->getFlashBag()->add('message', array('type' => 'success', 'content' => "Votre compte a bien été initialisé"));
 
     return $app->redirect('/');
 })->bind('signup_check');
@@ -366,8 +338,7 @@ $app->post('/signup_check_username', function (Request $request) use ($app) {
 $app->post('/newquiz_check', function (Request $request) use ($app) {
     $title = htmlspecialchars($request->request->get('quiz_title'));
     if (!$app['dao.quiz']->titleIsFree($title)) {
-        $app['session']->getFlashBag()->add('message'
-            , array('type' => 'danger', 'content' => 'Le titre "' . $title . '" est déjà pris'));
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Le titre "' . $title . '" est déjà pris'));
 
         return $app->redirect('/new/quiz');
     }
@@ -383,7 +354,7 @@ $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) 
 
     $answersContent = array();
     $idAnswers = array();
-    for($cpt = 1; $cpt < 5 ; $cpt++) {
+    for ($cpt = 1; $cpt < 5; $cpt++) {
         $tmp = $request->request->get('answer' . $cpt . '_content');
         array_push($answersContent, $tmp);
         array_push($idAnswers, $app['dao.answer']->saveAnswer($tmp));
@@ -391,7 +362,7 @@ $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) 
     $goodAnswer = $idAnswers[$request->request->get('answer_is_good')];
     $idQuestion = $app['dao.question']->saveQuestion($question_content, $goodAnswer);
 
-    foreach($idAnswers as $idAnswer) {
+    foreach ($idAnswers as $idAnswer) {
         $app['dao.question']->addAnswer($idQuestion, $idAnswer);
     }
     $app['dao.quiz']->addQuestion($idQuestion, $id);
@@ -413,7 +384,7 @@ $app->post('/newAnswer_check/{id}', function (Request $request, $id) use ($app) 
     }
 
     return $app['twig']->render('formAnswer.html.twig', array('quiz' => $quiz, 'questions' => $questions));
-})->bind('newAnswer_check');
+})->bind('newAnswer_check')->assert('id', '\d+');
 
 $app->post('/edit/user/{id}/newpasswordchecker', function (Request $request, $id) use ($app) {
 
@@ -457,4 +428,4 @@ $app->post('/edit/user/{id}/newpasswordchecker', function (Request $request, $id
     action', 'type' => 'warning'));
 
     return $app->redirect($app['url_generator']->generate('home'), 303); // 303 See Other
-})->bind('newpasswordchecker');
+})->bind('newpasswordchecker')->assert('id', '\d+');
