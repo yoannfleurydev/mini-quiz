@@ -3,9 +3,11 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <h3>Vous avez terminé le quiz
+                <small>{{ quizTitle }}</small>
+            </h3>
             <p>
-                <h3>Bravo vous avez fini : {{ quizTitle }}</h3>
-                Vous avez obtenu la note suivante : {{ nbGoodAnswers }}/{{ nbAnswers }}
+                Vous avez obtenu le score suivant : {{ nbGoodAnswers }} sur {{ nbAnswers }}.
             </p>
         </div>
     </div>

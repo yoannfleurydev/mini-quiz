@@ -4,8 +4,7 @@ namespace Miniquiz\DAO;
 
 use Doctrine\DBAL\Connection;
 
-abstract class DAO
-{
+abstract class DAO {
     /**
      * Connexion à la base de données.
      *
@@ -16,7 +15,7 @@ abstract class DAO
     /**
      * Constructeur.
      *
-     * @param \Doctrine\DBAL\Connection L'objet de connexion à la base de données.
+     * @param \Doctrine\DBAL\Connection L 'objet de connexion à la base de données.
      */
     public function __construct(Connection $db) {
         $this->db = $db;

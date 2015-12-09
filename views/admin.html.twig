@@ -13,12 +13,14 @@
                                     {{ user.userLogin }}
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    <a href="{{ path('edituser', {id: user.userId}) }}" class="btn btn-primary" title="Modifier l'utilisateur" role="button">
+                                    <a href="{{ path('edituser', {id: user.userId}) }}" class="btn btn-primary"
+                                       title="Modifier l'utilisateur" role="button">
                                         <span class="glyphicon glyphicon-cog"></span>
                                     </a>
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    <a href="{{  path('deleteuser', {id: user.userId}) }}" class="btn btn-danger" title="Supprimer l'utilisateur" role="button">
+                                    <a href="{{ path('deleteuser', {id: user.userId}) }}" class="btn btn-danger"
+                                       title="Supprimer l'utilisateur" role="button">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </div>
@@ -45,7 +47,8 @@
                                     {{ quiz.quizId }} - {{ quiz.quizTitle }}
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    <a href="{{  path('deletequiz', {id: quiz.quizId}) }}" class="btn btn-danger" title="Supprimer le Quiz" role="button">
+                                    <a href="{{ path('deletequiz', {id: quiz.quizId}) }}" class="btn btn-danger"
+                                       title="Supprimer le Quiz" role="button">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </div>

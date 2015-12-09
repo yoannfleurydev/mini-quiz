@@ -11,17 +11,19 @@
                     <form role="form" action="{{ path('signup_check') }}" method="POST">
                         <div class="form-group has-feedback">
                             <label for="user_login">Pseudo</label>
-                            <input class="form-control" id="user_login" name="user_login" required type="text" >
+                            <input class="form-control" id="user_login" name="user_login" required type="text">
                             <span id="stateUsername" class=""></span>
                         </div>
                         <div class="form-group has-feedback">
                             <label for="user_password">Mot de passe</label>
-                            <input class="form-control" id="user_password" name="user_password" type="password" required>
+                            <input class="form-control" id="user_password" name="user_password" type="password"
+                                   required>
                             <span id="statePass" class="glyphicon glyphicon-ok form-control-feedback"></span>
                         </div>
                         <div class="form-group has-feedback">
                             <label for="user_password2">Mot de passe</label>
-                            <input class="form-control" id="user_password2" name="user_password2" required type="password">
+                            <input class="form-control" id="user_password2" name="user_password2" required
+                                   type="password">
                             <span id="statePass2" class="glyphicon glyphicon-ok form-control-feedback"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Validez</button>

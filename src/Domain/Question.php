@@ -11,64 +11,56 @@ class Question {
     /**
      * @return mixed
      */
-    public function getQuestionId()
-    {
+    public function getQuestionId() {
         return $this->question_id;
     }
 
     /**
      * @param mixed $question_id
      */
-    public function setQuestionId($question_id)
-    {
+    public function setQuestionId($question_id) {
         $this->question_id = $question_id;
     }
 
     /**
      * @return mixed
      */
-    public function getQuestionText()
-    {
+    public function getQuestionText() {
         return $this->question_text;
     }
 
     /**
      * @param mixed $question_text
      */
-    public function setQuestionText($question_text)
-    {
+    public function setQuestionText($question_text) {
         $this->question_text = $question_text;
     }
 
     /**
      * @return mixed
      */
-    public function getQuestionGoodAnswer()
-    {
+    public function getQuestionGoodAnswer() {
         return $this->question_good_answer;
     }
 
     /**
      * @param mixed $question_good_answer
      */
-    public function setQuestionGoodAnswer($question_good_answer)
-    {
+    public function setQuestionGoodAnswer($question_good_answer) {
         $this->question_good_answer = $question_good_answer;
     }
 
     /**
      * @return mixed
      */
-    public function getAnswers()
-    {
+    public function getAnswers() {
         return $this->answers;
     }
 
     /**
      * @param mixed $answers
      */
-    public function setAnswers($answers)
-    {
+    public function setAnswers($answers) {
         $this->answers = $answers;
     }
 

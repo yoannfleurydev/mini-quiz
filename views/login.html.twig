@@ -11,11 +11,13 @@
                     <form role="form" action="{{ path('login_check') }}" method="post">
                         <div class="form-group">
                             <label for="user_login">Pseudo</label>
-                            <input type="text" class="form-control" id="user_login" name="user_login" required autofocus autocomplete="off">
+                            <input type="text" class="form-control" id="user_login" name="user_login" required autofocus
+                                   autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="user_password">Mot de passe</label>
-                            <input class="form-control" id="user_password" name="user_password" type="password" required>
+                            <input class="form-control" id="user_password" name="user_password" type="password"
+                                   required>
                         </div>
                         <button type="submit" class="btn btn-primary">Validez</button>
                         <button type="reset" class="btn btn-default">Effacez</button>

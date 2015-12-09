@@ -159,8 +159,7 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
         $progress = floor((($totalQuestion - count($questions)) / $totalQuestion) * 100);
     }
 
-    return $app['twig']->render('answerQuiz.html.twig',
-        array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
+    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
 })->bind('answerQuiz')->assert('id', '\d+');
 
 $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
