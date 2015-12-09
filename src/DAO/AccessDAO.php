@@ -9,9 +9,7 @@ class AccessDAO extends DAO {
         $sql = "SELECT * FROM mq_access WHERE access_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
-        if ($row)
-            return $this->buildDomainObject($row);
-        else
+        if ($row) return $this->buildDomainObject($row); else
             throw new \Exception("No mq_access matching id " . $id);
     }
 

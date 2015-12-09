@@ -2,8 +2,7 @@
 
 namespace Miniquiz\Domain;
 
-class User
-{
+class User {
     /**
      * User id
      *
@@ -92,8 +91,7 @@ class User
      *
      * @return int
      */
-    public function getUserAccessId()
-    {
+    public function getUserAccessId() {
         return $this->userAccessId;
     }
 
@@ -102,8 +100,7 @@ class User
      *
      * @param int $userAccessId
      */
-    public function setUserAccessId($userAccessId)
-    {
+    public function setUserAccessId($userAccessId) {
         $this->userAccessId = $userAccessId;
     }
 }

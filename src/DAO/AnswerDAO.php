@@ -9,9 +9,7 @@ class AnswerDAO extends DAO {
         $sql = "SELECT * FROM mq_answer WHERE answer_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
-        if ($row)
-            return $this->buildDomainObject($row);
-        else
+        if ($row) return $this->buildDomainObject($row); else
             throw new \Exception("No mq_answer matching id " . $id);
     }
 
@@ -20,20 +18,20 @@ class AnswerDAO extends DAO {
         $rows = $this->getDb()->fetchAll($sql);
 
         $answer = array();
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $answer_id = $row['answer_id'];
             $answer[$answer_id] = $this->buildDomainObject($row);
         }
+
         return $answer;
     }
 
     public function saveAnswer($answer_content) {
-        $answerData = array (
-            'answer_content' => $answer_content
-        );
+        $answerData = array('answer_content' => $answer_content);
 
 
         $this->getDb()->insert("mq_answer", $answerData);
+
         return $this->getDb()->lastInsertId();
     }
 
@@ -53,19 +51,18 @@ class AnswerDAO extends DAO {
         }
 
 
-        if ($rows)
-            return $answers;
+        if ($rows) return $answers;
     }
 
     /**
      * @param $row La ligne de la base de données en tableau PHP
      * @return Quiz L'objet Quiz instancié
      */
-    protected function buildDomainObject($row)
-    {
+    protected function buildDomainObject($row) {
         $answer = new Answer();
         $answer->setAnswerId($row['answer_id']);
-        $answer->setAnswerContent($row['answer_content']);
+        $answer->setAnswerContent(\Parsedown::instance()->setMarkupEscaped(true)->text($row['answer_content']));
+
         return $answer;
     }
 }

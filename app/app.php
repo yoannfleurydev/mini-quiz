@@ -1,5 +1,4 @@
 <?php
-use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
 // Register global error and exception handlers
@@ -36,13 +35,14 @@ $app['dao.quizsave'] = $app->share(function ($app) {
     return new Miniquiz\DAO\QuizSaveDAO($app['db']);
 });
 
-
-$app['function.isAdmin'] = $app->share(function($app) {
+$app['function.isAdmin'] = $app->share(function ($app) {
     $user = $app['session']->get('user');
     if (isset($user)) {
         $userAccessId = $user->getUserAccessId();
         $userAccess = $app['dao.access']->find($userAccessId);
+
         return ($userAccess->getAccessKey() === 'ADMIN');
     }
+
     return false;
 });
