@@ -8,8 +8,8 @@ $app->get('/admin', function () use ($app) {
 
         return $app['twig']->render('admin.html.twig', array('users' => $users, 'quizzes' => $quizzes));
     } else {
-        // TODO Changer Error avec message et mettre un redirect
-        return $app['twig']->render('index.html.twig', array('error' => "Vous n'avez pas les droits d'accès
-        suffisant pour accéder à cette partie"));
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Cette opération ne vous est pas permise'));
+
+        return $app->redirect('/login');
     }
 })->bind('admin');
