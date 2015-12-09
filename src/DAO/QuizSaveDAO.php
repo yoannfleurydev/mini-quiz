@@ -33,7 +33,7 @@ class QuizSaveDAO extends DAO {
 
         $quizsave = array();
         foreach($rows as $row) {
-            $quizsave_id = $row['quiz_id'];
+            $quizsave_id = $row['quiz_save_id'];
             $quizsave[$quizsave_id] = $this->buildDomainObject($row);
         }
         return $quizsave;
@@ -45,7 +45,7 @@ class QuizSaveDAO extends DAO {
 
         $quizsave = array();
         foreach($rows as $row) {
-            $quizsave_id = $row['quiz_id'];
+            $quizsave_id = $row['quiz_save_id'];
             $quizsave[$quizsave_id] = $this->buildDomainObject($row);
         }
         return $quizsave;

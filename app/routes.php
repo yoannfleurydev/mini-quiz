@@ -181,30 +181,29 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
     $tabNbAnswer = array();
     $nbTotalGoodAnswer = 0;
     $nbTotalAnswer = 0;
+    $nbUser = count($quizsaves);
     $nbSuccesTest = 0;
-    echo count($quizsaves);
-    foreach ($questions as $question) {
-        $nb = 0;
-        $nbAnswer = 0;
-        foreach ($quizsaves as $quizsave) {
-            $nbAnswer++;
+    foreach ($quizsaves as $quizsave) {
+        $nbAnswer = count($quizsave->getAnswers());
+        $nbTotalAnswer += $nbAnswer;
+        $nbGoodAnswer = 0;
+        foreach ($questions as $question) {
             $answers = $quizsave->getAnswers();
-            foreach($answers as $answer) {
+            foreach ($answers as $answer) {
                 if ($question->getQuestionGoodAnswer() == $answer) {
-                    $nb++;
+                    $nbGoodAnswer++;
                 }
             }
+            $tabGoodAnswer[$question->getQuestionId()] = $nbGoodAnswer;
+            $tabNbAnswer[$question->getQuestionId()] = $nbAnswer;
         }
-        $nbTotalGoodAnswer += $nb;
-        $nbTotalAnswer += $nbAnswer;
-        if ($nb > $nbAnswer / 2) {
+        if ($nbAnswer > 0 && $nbGoodAnswer >= $nbAnswer / 2) {
             $nbSuccesTest++;
         }
-        $tabGoodAnswer[$question->getQuestionId()] = $nb;
-        $tabNbAnswer[$question->getQuestionId()] = $nbAnswer;
+        $nbTotalGoodAnswer += $nbGoodAnswer;
     }
-    $nbSuccesTest = ($nbSuccesTest / $nbTotalAnswer) * 100;
-    $quizAverage = ($nbTotalGoodAnswer / $nbTotalAnswer) * 100;
+    $nbSuccesTest = floor(($nbSuccesTest / $nbUser) * 100);
+    $quizAverage = floor(($nbTotalGoodAnswer / $nbTotalAnswer) * 100);
     return $app['twig']->render('statsQuiz.html.twig',
         array("questions" => $questions, "tabGoodAnswer" => $tabGoodAnswer
         , "tabNbAnswer" => $tabNbAnswer, "quiz" => $quiz, "quizAverage" => $quizAverage
