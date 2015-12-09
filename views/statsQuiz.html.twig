@@ -27,8 +27,8 @@
                         {% for question in questions %}
                             <tr>
                                 <td>{{ question.questionText }}</td>
-                                <td class="text-center">{{ tabGoodAnswer[question.questionText] }}</td>
-                                <td class="text-center">{{ tabNbAnswer[question.questionText] }}</td>
+                                <td class="text-center">{{ tabGoodAnswer[question.questionId] }}</td>
+                                <td class="text-center">{{ tabNbAnswer[question.questionId] }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

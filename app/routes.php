@@ -182,6 +182,7 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
     $nbTotalGoodAnswer = 0;
     $nbTotalAnswer = 0;
     $nbSuccesTest = 0;
+    echo count($quizsaves);
     foreach ($questions as $question) {
         $nb = 0;
         $nbAnswer = 0;
@@ -199,8 +200,8 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
         if ($nb > $nbAnswer / 2) {
             $nbSuccesTest++;
         }
-        $tabGoodAnswer[$question->getQuestionText()] = $nb;
-        $tabNbAnswer[$question->getQuestionText()] = $nbAnswer;
+        $tabGoodAnswer[$question->getQuestionId()] = $nb;
+        $tabNbAnswer[$question->getQuestionId()] = $nbAnswer;
     }
     $nbSuccesTest = ($nbSuccesTest / $nbTotalAnswer) * 100;
     $quizAverage = ($nbTotalGoodAnswer / $nbTotalAnswer) * 100;
