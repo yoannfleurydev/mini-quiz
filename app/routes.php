@@ -167,6 +167,11 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $quizsaves = $app['dao.quizsave']->findByQuiz($id);
 
+    if ($quizsaves == null) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Ce quiz n\'a jamais été répondu'));
+
+        return $app->redirect('/');
+    }
     $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
     $questions = array();
     foreach ($questions_id as $question_id) {
@@ -179,6 +184,10 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
 
     $tabGoodAnswer = array();
     $tabNbAnswer = array();
+    foreach ($questions as $question) {
+        $tabGoodAnswer[$question->getQuestionId()] = 0;
+        $tabNbAnswer[$question->getQuestionId()] = 0;
+    }
     $nbTotalGoodAnswer = 0;
     $nbTotalAnswer = 0;
     $nbUser = count($quizsaves);
@@ -189,13 +198,16 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
         $nbGoodAnswer = 0;
         foreach ($questions as $question) {
             $answers = $quizsave->getAnswers();
-            foreach ($answers as $answer) {
-                if ($question->getQuestionGoodAnswer() == $answer) {
-                    $nbGoodAnswer++;
+            if (in_array($question->getQuestionGoodAnswer(), $answers)) {
+                $nbGoodAnswer++;
+                $tabGoodAnswer[$question->getQuestionId()]++;
+            }
+            $reelAnswers = $app['dao.answer']->findByIdQuestion($question->getQuestionId());
+            foreach($reelAnswers as $reelAnswer) {
+                if (in_array($reelAnswer->getAnswerId(), $answers)) {
+                    $tabNbAnswer[$question->getQuestionId()]++;
                 }
             }
-            $tabGoodAnswer[$question->getQuestionId()] = $nbGoodAnswer;
-            $tabNbAnswer[$question->getQuestionId()] = $nbAnswer;
         }
         if ($nbAnswer > 0 && $nbGoodAnswer >= $nbAnswer / 2) {
             $nbSuccesTest++;

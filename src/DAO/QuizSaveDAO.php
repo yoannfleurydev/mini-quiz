@@ -43,12 +43,16 @@ class QuizSaveDAO extends DAO {
         $sql = "SELECT * FROM mq_quizsave WHERE quiz_id=?";
         $rows = $this->getDb()->fetchAll($sql, array($idQuiz));
 
-        $quizsave = array();
-        foreach($rows as $row) {
-            $quizsave_id = $row['quiz_save_id'];
-            $quizsave[$quizsave_id] = $this->buildDomainObject($row);
+        if ($rows) {
+            $quizsave = array();
+            foreach($rows as $row) {
+                $quizsave_id = $row['quiz_save_id'];
+                $quizsave[$quizsave_id] = $this->buildDomainObject($row);
+            }
+            return $quizsave;
+        } else {
+            return null;
         }
-        return $quizsave;
     }
 
     public function addSaveQuiz($quiz_id, $user_id, $quiz_save) {
