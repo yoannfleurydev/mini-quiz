@@ -1,5 +1,5 @@
-$(document).ready(function(){
-    $(".message").click(function(){
+$(document).ready(function () {
+    $(".message").click(function () {
         $(this).fadeOut()
     });
 });

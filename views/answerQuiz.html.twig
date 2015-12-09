@@ -23,7 +23,8 @@
                             {% for answer in question.answers %}
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="{{ answer.answerId }}">{{ answer.answercontent | raw }}</label>
-                                    <input name="answer" id="{{ answer.answerId }}" value="{{ answer.answerId }}" type="radio">
+                                    <input name="answer" id="{{ answer.answerId }}" value="{{ answer.answerId }}"
+                                           type="radio">
                                 </div>
                             {% endfor %}
                         </div>
@@ -35,11 +36,13 @@
         <div class="row">
             <div class="col-lg-12 col-xs-12">
                 <p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%;">
-                            {{ progress }}%
-                        </div>
+
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                         aria-valuemax="100" style="width: {{ progress }}%;">
+                        {{ progress }}%
                     </div>
+                </div>
                 </p>
             </div>
         </div>

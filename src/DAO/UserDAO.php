@@ -4,8 +4,7 @@ namespace Miniquiz\DAO;
 
 use Miniquiz\Domain\User;
 
-class UserDAO extends DAO
-{
+class UserDAO extends DAO {
     /**
      * Returns a user matching the supplied id.
      *
@@ -17,9 +16,7 @@ class UserDAO extends DAO
         $sql = "SELECT * FROM mq_user WHERE user_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
-        if ($row)
-            return $this->buildDomainObject($row);
-        else
+        if ($row) return $this->buildDomainObject($row); else
             throw new \Exception("No mq_user matching id " . $id);
     }
 
@@ -28,10 +25,11 @@ class UserDAO extends DAO
         $rows = $this->getDb()->fetchAll($sql);
 
         $users = array();
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $user_id = $row['user_id'];
             $users[$user_id] = $this->buildDomainObject($row);
         }
+
         return $users;
     }
 
@@ -39,14 +37,11 @@ class UserDAO extends DAO
         $this->getDb()->delete('mq_user', array('user_id' => $id));
     }
 
-    public function findByUserLogin($user_login)
-    {
-        $sql = "select * from mq_user where user_login=?";
+    public function findByUserLogin($user_login) {
+        $sql = "SELECT * FROM mq_user WHERE user_login=?";
         $row = $this->getDb()->fetchAssoc($sql, array($user_login));
 
-        if ($row)
-            return $this->buildDomainObject($row);
-        else
+        if ($row) return $this->buildDomainObject($row); else
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $user_login));
     }
 
@@ -62,7 +57,7 @@ class UserDAO extends DAO
         $sql = "SELECT * FROM mq_user WHERE user_login=?";
         $row = $this->getDb()->fetchAssoc($sql, array($login));
 
-        if ($row == NULL) {
+        if ($row == null) {
             return true;
         } else {
             return false;
@@ -75,13 +70,9 @@ class UserDAO extends DAO
         $pass = password_hash($password, PASSWORD_BCRYPT, $options);
 
 
-        $userData = array(
-            'user_login' => $login,
-            'user_password' => $pass,
-            // TODO en dur dans le code, mais peut être serait-il intéressant de faire une requête sur la base de
+        $userData = array('user_login' => $login, 'user_password' => $pass, // TODO en dur dans le code, mais peut être serait-il intéressant de faire une requête sur la base de
             // données pour avoir par défaut l'id qui correspond à un USER.
-            'user_access_id' => 2
-        );
+            'user_access_id' => 2);
 
         $this->getDb()->insert("mq_user", $userData);
     }
@@ -105,6 +96,7 @@ class UserDAO extends DAO
         $user->setUserLogin($row['user_login']);
         $user->setUserPassword($row['user_password']);
         $user->setUserAccessId($row['user_access_id']);
+
         return $user;
     }
 }

@@ -159,8 +159,7 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
         $progress = floor((($totalQuestion - count($questions)) / $totalQuestion) * 100);
     }
 
-    return $app['twig']->render('answerQuiz.html.twig',
-        array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
+    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
 })->bind('answerQuiz')->assert('id', '\d+');
 
 $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
@@ -188,7 +187,7 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
         foreach ($quizsaves as $quizsave) {
             $nbAnswer++;
             $answers = $quizsave->getAnswers();
-            foreach($answers as $answer) {
+            foreach ($answers as $answer) {
                 if ($question->getQuestionGoodAnswer() == $answer) {
                     $nb++;
                 }
@@ -204,10 +203,8 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
     }
     $nbSuccesTest = ($nbSuccesTest / $nbTotalAnswer) * 100;
     $quizAverage = ($nbTotalGoodAnswer / $nbTotalAnswer) * 100;
-    return $app['twig']->render('statsQuiz.html.twig',
-        array("questions" => $questions, "tabGoodAnswer" => $tabGoodAnswer
-        , "tabNbAnswer" => $tabNbAnswer, "quiz" => $quiz, "quizAverage" => $quizAverage
-        , "avergaeSuccesQuiz" => $nbSuccesTest));
+
+    return $app['twig']->render('statsQuiz.html.twig', array("questions" => $questions, "tabGoodAnswer" => $tabGoodAnswer, "tabNbAnswer" => $tabNbAnswer, "quiz" => $quiz, "quizAverage" => $quizAverage, "avergaeSuccesQuiz" => $nbSuccesTest));
 })->bind('statsQuiz');
 
 $app->match('/edit/quiz_check/{id}', function (Request $request, $id) use ($app) {

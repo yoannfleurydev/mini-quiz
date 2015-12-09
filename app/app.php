@@ -35,16 +35,14 @@ $app['dao.quizsave'] = $app->share(function ($app) {
     return new Miniquiz\DAO\QuizSaveDAO($app['db']);
 });
 
-$app['parsedown'] = $app->share(function ($app) {
-    return new Parsedown();
-});
-
-$app['function.isAdmin'] = $app->share(function($app) {
+$app['function.isAdmin'] = $app->share(function ($app) {
     $user = $app['session']->get('user');
     if (isset($user)) {
         $userAccessId = $user->getUserAccessId();
         $userAccess = $app['dao.access']->find($userAccessId);
+
         return ($userAccess->getAccessKey() === 'ADMIN');
     }
+
     return false;
 });

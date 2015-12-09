@@ -2,9 +2,11 @@ html {
     position: relative;
     min-height: 100%;
 }
+
 body {
     margin-bottom: 60px;
 }
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -14,7 +16,7 @@ body {
 }
 
 .message:hover, label:hover {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 label {
