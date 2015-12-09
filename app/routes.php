@@ -5,7 +5,9 @@ use Symfony\Component\HttpFoundation\Request;
 $app->get('/', function () use ($app) {
     $quizzes = $app['dao.quiz']->findAll();
 
-    return $app['twig']->render('index.html.twig', array('quizzes' => $quizzes));
+    $markdown = $app['parsedown']->text('**Hello** _Parsedown_!');
+
+    return $app['twig']->render('index.html.twig', array('quizzes' => $quizzes, 'markdown' => $markdown));
 })->bind('home');
 
 $app->get('/login', function (Request $request) use ($app) {
