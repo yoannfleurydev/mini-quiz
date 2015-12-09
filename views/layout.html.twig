@@ -62,7 +62,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
-    {% if not app.session.get("connected")  %}
+    {% if not app.session.get("connected") %}
         <div class="row message">
             <div class="col-lg-offset-2 col-sm-8 col-xs-12">
                 <div class="alert alert-warning" role="alert">
@@ -91,14 +91,22 @@
 </div>
 <footer class="footer">
     <div class="container">
-        <div class="col-lg-6 col-xs-12">
-            <p><h5>Développé par :</h5><a href="http://yoannfleury.eu" >FLEURY Yoann</a>,
-            <a href="http://valentincrochemore.fr/cv">CROCHEMORE Valentin</a></p>
-        </div>
-        <div class="col-lg-6 col-xs-12">
-            <p><a href="https://github.com/yoannfleurydev/mini-quiz" class="btn btn-default">Sources</a></p>
+        <div class="row">
+            <div class="col-lg-6 col-xs-12">
+                <p><h5>Développé par :</h5><a href="http://yoannfleury.eu">FLEURY Yoann</a>,
+                <a href="http://valentincrochemore.fr/cv">CROCHEMORE Valentin</a></p>
+            </div>
+            <div class="col-lg-6 col-xs-12">
+                <p>
+                    <a aria-label="Download yoannfleurydev/mini-quiz on GitHub" data-style="mega"
+                       href="https://github.com/yoannfleurydev/mini-quiz/archive/master.zip"
+                       class="github-button">Download</a>
+                </p>
+            </div>
         </div>
     </div>
 </footer>
+{# Script pour le bouton de téléchargement de GitHub #}
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>
