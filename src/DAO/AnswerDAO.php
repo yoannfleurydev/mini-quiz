@@ -65,7 +65,7 @@ class AnswerDAO extends DAO {
     {
         $answer = new Answer();
         $answer->setAnswerId($row['answer_id']);
-        $answer->setAnswerContent($row['answer_content']);
+        $answer->setAnswerContent(\Parsedown::instance()->setMarkupEscaped(true)->text($row['answer_content']));
         return $answer;
     }
 }
