@@ -1,13 +1,34 @@
 # MINI-QUIZ
 
+## REQUIREMENTS
+
+The following requirements were tested.
+The application may be working on other configuration.
+Just give it a try.
+
+* `libcurl` installed on your system.
+* Apache >= 2.4
+* PHP >=5.4 on your web server **and** in your `PATH`. The following extensions are required :
+    * `php5-curl`
+    * `php5-json`
+* MySQL >= 5.6 to run you database. `mysql` command should be in your `PATH`.
+
 ## INSTALLATION
 
-Download the zip archive and extract the content of the mini-quiz folder into your web server root.
-You should see the `composer.json` file into the root of your server.
+1. Download the zip archive and extract the content of the mini-quiz folder, or just execute `git clone https://github.com/yoannfleurydev/mini-quiz.git`, into your **web server root**.
+You should now see the `install.php` **file** into the root of your server.
 
-<!-- TODO Ajouter l'utilisation du script d'installation de l'application web. -->
+2. Create the empty database in MySQL server.
+
+3. Run `install.php` in **CLI** (**C**ommand **L**ine **I**nterface) and follow the steps.
+
+        ~$ php install.php
+
+4. Enjoy Miniquiz!
 
 ## LICENCE
+
+The content of this repository is under GPL Version 3 Licence.
 
 ## AUTHOR
 
