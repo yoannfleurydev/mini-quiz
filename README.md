@@ -5,13 +5,7 @@
 Download the zip archive and extract the content of the mini-quiz folder into your web server root.
 You should see the `composer.json` file into the root of your server.
 
-Then, use composer to download dependencies :
-
-    composer install
-
-If
-
-**TODO .......**
+<!-- TODO Ajouter l'utilisation du script d'installation de l'application web. -->
 
 ## LICENCE
 
