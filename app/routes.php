@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 
 $app->get('/', function () use ($app) {
     $quizzes = $app['dao.quiz']->findAll();
@@ -80,7 +81,7 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
     }
 })->bind('editquiz')->assert('id', '\d+');
 
-$app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
+$app->match('/online/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);
     $user = $app['session']->get('user');
     $userId = $user->getUserId();
@@ -160,7 +161,92 @@ $app->match('/answerQuiz/{id}', function (Request $request, $id) use ($app) {
     }
 
     return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
-})->bind('answerQuiz')->assert('id', '\d+');
+})->bind('online/answerQuiz')->assert('id', '\d+');
+
+$app->match('/offline/answerQuiz/{id}', function (Request $request, $id) use ($app) {
+    $quiz = $app['dao.quiz']->find($id);
+    $userId = -1;
+    $cookie_name = 'quizSave' . $id;
+    $quizsave = null;
+    if (isset($_COOKIE[$cookie_name])) {
+        $quizsave = json_decode($_COOKIE[$cookie_name], true);
+    }
+    if ($request->request->get('next')) {
+        if (in_array($app['session']->get('questionCurr')->getQuestionId(), $quizsave['questions'])) {
+            $tmpTabQuest = $quizsave['questions'];
+            $questions = array();
+            $cpt = 0;
+            foreach ($tmpTabQuest as $question) {
+                if ($cpt != 0) {
+                    array_push($questions, $question);
+                }
+                $cpt++;
+            }
+            $answers = $quizsave['answer'];
+            array_push($answers, $request->request->get('answer'));
+            $quiz_save = array('quiz_id' => $id, 'user_id' => $userId, 'questions' => $questions, 'answer' => $answers,);
+            $quizsave['questions'] = $questions;
+            $quizsave['answer'] = $answers;
+            setcookie($cookie_name, json_encode($quiz_save), time()+(3600*1000));
+        }
+    }
+
+    if ($quizsave === null) {
+        $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+
+        $questions = array();
+        foreach ($questions_id as $question_id) {
+            $question = $app['dao.question']->find($question_id);
+            if ($question != null) {
+                $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+                array_push($questions, $question);
+            }
+        }
+        $quiz_save = array('quiz_id' => $id, 'user_id' => $userId, 'questions' => $questions_id, 'answer' => array(),);
+
+        setcookie($cookie_name, json_encode($quiz_save), time()+(3600*1000));
+    } else {
+        $questions_id = $quizsave['questions'];
+
+        $questions = array();
+        foreach ($questions_id as $question_id) {
+            $question = $app['dao.question']->find($question_id);
+            if ($question != null) {
+                $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+                array_push($questions, $question);
+            }
+        }
+    }
+    if (count($questions) == 0) {
+        $quiz = $app['dao.quiz']->find($id);
+        $questions_id = $app['dao.quiz']->getQuestionByQuiz($id);
+        foreach ($questions_id as $question_id) {
+            $question = $app['dao.question']->find($question_id);
+            if ($question != null) {
+                $question->setAnswers($app['dao.answer']->findByIdQuestion($question_id));
+                array_push($questions, $question);
+            }
+        }
+        $nbAnswers = count($quizsave['answer']);
+        $cpt = 0;
+        $nbGoodAnswers = 0;
+        foreach ($questions as $question) {
+            if ($question->getQuestionGoodAnswer() == $quizsave['answer'][$cpt]) {
+                $nbGoodAnswers++;
+            }
+            $cpt++;
+        }
+
+        return $app['twig']->render('endQuiz.html.twig', array("quizTitle" => $quiz->getQuizTitle(), "nbAnswers" => $nbAnswers, "nbGoodAnswers" => $nbGoodAnswers));
+    } else {
+        $question = $questions[0];
+        $app['session']->set('questionCurr', $question);
+        $totalQuestion = count($app['dao.quiz']->getQuestionByQuiz($id));
+        $progress = floor((($totalQuestion - count($questions)) / $totalQuestion) * 100);
+    }
+
+    return $app['twig']->render('answerQuiz.html.twig', array('quiz' => $quiz, 'question' => $question, 'progress' => $progress));
+})->bind('offline/answerQuiz')->assert('id', '\d+');
 
 $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
     $quiz = $app['dao.quiz']->find($id);

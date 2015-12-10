@@ -13,7 +13,11 @@
     </div>
     {% if question is defined %}
         <div class="row">
-            <form method="POST" action="{{ path('answerQuiz', {'id' : quiz.quizId}) }}">
+            {% if app.session.get("connected") %}
+            <form method="POST" action="{{ path('online/answerQuiz', {'id' : quiz.quizId}) }}">
+            {% else %}
+                <form method="POST" action="{{ path('offline/answerQuiz', {'id' : quiz.quizId}) }}">
+            {% endif %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"> {{ question.QuestionText }} </h3>

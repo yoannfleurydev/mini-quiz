@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         {% if user is defined %}
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <h3>Changement de mot de passe</h3>
 
                 <form role="form" action="{{ path('newpasswordchecker', {id: user.userId}) }}" method="post">

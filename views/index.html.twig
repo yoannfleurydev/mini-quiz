@@ -37,7 +37,11 @@
                             <td>{{ quiz.quizDescription }}</td>
                             {% if app.session.get("connected") %}
                                 <td class="text-center"><a class="btn btn-default"
-                                                           href="{{ path('answerQuiz', {'id' : quiz.quizId}) }}">Répondre</a>
+                                                           href="{{ path('online/answerQuiz', {'id' : quiz.quizId}) }}">Répondre</a>
+                                </td>
+                            {% else %}
+                                <td class="text-center"><a class="btn btn-default"
+                                                           href="{{ path('offline/answerQuiz', {'id' : quiz.quizId}) }}">Répondre</a>
                                 </td>
                             {% endif %}
                             <td class="text-center"><a href="{{ path('statsQuiz', {'id' : quiz.quizId}) }}"

@@ -57,7 +57,7 @@ class QuizSaveDAO extends DAO {
         }
     }
 
-    public function addSaveQuiz($quiz_id, $user_id, $quiz_save) {
+        public function addSaveQuiz($quiz_id, $user_id, $quiz_save) {
         $quiz_save_content = json_encode($quiz_save);
         $quizData = array('quiz_id' => $quiz_id, 'user_id' => $user_id, 'quiz_save_content' => $quiz_save_content);
 
