@@ -64,19 +64,18 @@
 <div class="container">
     {% if not app.session.get("connected") %}
         <div class="row message">
-            <div class="col-lg-offset-2 col-sm-8 col-xs-12">
+            <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
                 <div class="alert alert-warning" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                    <!--TODO ajouter accent circonflex à etes -->
-                    Attention, vous n'etes pas connecté, vos scores ne serons pas enregistrés
+                    Attention, vous n'êtes pas connecté, vos scores ne serons pas enregistrés.
                 </div>
             </div>
         </div>
     {% endif %}
     {% for message in app.session.getFlashBag.get('message') %}
         <div class="row message">
-            <div class="col-lg-offset-2 col-sm-8 col-xs-12">
+            <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-8 col-xs-12">
                 <div class="alert alert-{{ message.type }}" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
