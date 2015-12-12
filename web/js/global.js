@@ -3,7 +3,3 @@ $(document).ready(function () {
         $(this).fadeOut()
     });
 });
-
-$(function () {
-    $('[data-toggle="popover"]').popover()
-});
