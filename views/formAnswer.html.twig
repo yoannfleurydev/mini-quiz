@@ -28,10 +28,20 @@
         <div class="col-lg-offset-2 col-sm-8 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Ajouter une question</h3>
+                    <p class="panel-title">Ajouter une question</p>
                 </div>
                 <div class="panel-body">
                     <form role="form" action="{{ path('newAnswer_check', {"id" : quiz.quizid}) }}" method="post">
+                        <a tabindex="0"
+                           class="btn btn-default"
+                           role="button"
+                           data-toggle="popover"
+                           title="Aide au formatage des réponses"
+                           data-content="Vous pouvez formater les réponses grâce à la syntaxe Markdown. Par exemple pour mettre en gras du texte, il suffit d'écrire **gras**. Nous vous renvoyons sur le lien https://daringfireball.net/projects/markdown/basics pour plus de détails. En revanche, faite bien attention, l'apparence de votre quiz pourra avoir des effets innatendu si par exemple vous utilisez des listes."
+                        >
+                            Aide au formatage
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
                         <div class="form-group">
                             <label for="question_text">Question</label>
                             <textarea class="form-control" id="question_text" name="question_text" required></textarea>
