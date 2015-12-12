@@ -73,7 +73,11 @@ class QuizSaveDAO extends DAO {
         $this->getDb()->update("mq_quizsave", $quizData, array('quiz_id' => $quiz_id, 'user_id' => $user_id));
     }
 
-    public function deleteId($quiz_id, $user_id) {
+    public function deleteIdQuiz($quiz_id) {
+        $this->getDb()->delete('mq_quizsave', array('quiz_id' => $quiz_id));
+    }
+
+    public function deleteIdQuizAndIdUser($quiz_id, $user_id) {
         $this->getDb()->delete('mq_quizsave', array('quiz_id' => $quiz_id, 'user_id' => $user_id));
     }
 

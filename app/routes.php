@@ -71,6 +71,14 @@ $app->get('/edit/quiz/{id}', function ($id) use ($app) {
         return $app->redirect('/login');
     }
 
+    if ($app['dao.quizsave']->findByQuiz($id)) {
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Ce quiz ne peut être modifier car des utilisateurs y ont déjà répondu'));
+
+        $user = $app['session']->get('user');
+        $userId = $user->getUserId();
+        return $app->redirect('/user/' . $userId);
+    }
+
     $quiz = $app['dao.quiz']->find($id);
 
     // Si l'utilisateur est admin, alors il peut editer un quiz, il peut également si c'est l'auteur du quiz.
@@ -85,6 +93,11 @@ $app->match('/online/answerQuiz/{id}', function (Request $request, $id) use ($ap
     $quiz = $app['dao.quiz']->find($id);
     $user = $app['session']->get('user');
     $userId = $user->getUserId();
+    if (count($app['dao.quiz']->getQuestionByQuiz($id)) == 0 ){
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Ce quiz ne contient pas de question'));
+
+        return $app->redirect('/');
+    }
     $quizsave = $app['dao.quizsave']->find($id, $userId);
     if ($request->request->get('next')) {
         if (in_array($app['session']->get('questionCurr')->getQuestionId(), $quizsave->getQuestions())) {
@@ -168,6 +181,11 @@ $app->match('/offline/answerQuiz/{id}', function (Request $request, $id) use ($a
     $userId = -1;
     $cookie_name = 'quizSave' . $id;
     $quizsave = null;
+    if (count($app['dao.quiz']->getQuestionByQuiz($id)) == 0 ){
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Ce quiz ne contient pas de question'));
+
+        return $app->redirect('/');
+    }
     if (isset($_COOKIE[$cookie_name])) {
         $quizsave = json_decode($_COOKIE[$cookie_name], true);
     }
@@ -374,6 +392,7 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
     // Si l'utilisateur est admin, alors il peut supprimer un quiz.
     if ($app['function.isAdmin']) {
         $app['dao.quiz']->deleteId($id);
+        $app['dao.quizsave']->deleteIdQuiz($id);
         $app['session']->getFlashBag()->add('message', array('content' => 'Le quiz a bien été supprimé', 'type' => 'success'));
 
         return $app->redirect('/admin');
@@ -384,6 +403,7 @@ $app->get('/delete/quiz/{id}', function ($id) use ($app) {
     // Si le quiz à supprimer appartient à l'utilisateur actuel, on autorise la suppression.
     if ($user->getUserId() === $quiz->getQuizUserId()) {
         $app['dao.quiz']->deleteId($id);
+        $app['dao.quizsave']->deleteIdQuiz($id);
         $app['session']->getFlashBag()->add('message', array('content' => 'Le quiz a bien été supprimé', 'type' => 'success'));
 
         return $app->redirect($app['url_generator']->generate('user', array('id' => $user->getUserId())));
