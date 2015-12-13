@@ -271,7 +271,8 @@ $app->match('/statsQuiz/{id}', function (Request $request, $id) use ($app) {
     $quizsaves = $app['dao.quizsave']->findByQuiz($id);
 
     if ($quizsaves == null) {
-        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Ce quiz n\'a jamais été répondu'));
+        $app['session']->getFlashBag()->add('message', array('type' => 'danger', 'content' => 'Pas de statistique
+        disponible pour ce quiz.'));
 
         return $app->redirect('/');
     }

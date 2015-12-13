@@ -33,9 +33,10 @@
                 <div class="panel-body">
                     <form role="form" action="{{ path('newAnswer_check', {"id" : quiz.quizid}) }}" method="post">
                         <a tabindex="0"
-                           class="btn btn-default"
+                           class="btn btn-default btn-block"
                            role="button"
                            data-toggle="popover"
+                           data-position="bottom"
                            title="Aide au formatage des réponses"
                            data-content="Vous pouvez formater les réponses grâce à la syntaxe Markdown. Par exemple pour mettre en gras du texte, il suffit d'écrire **gras**. Nous vous renvoyons sur le lien https://daringfireball.net/projects/markdown/basics pour plus de détails. En revanche, faite bien attention, l'apparence de votre quiz pourra avoir des effets innatendu si par exemple vous utilisez des listes."
                         >
@@ -86,11 +87,22 @@
                                   </span>
                             </div>
                         </div>
-                        <p>Ajoutez une question puis :</p>
-                        <button type="submit" name="add" value="add" class="btn btn-default">Ajouter une autre question
-                        </button>
-                        <button type="submit" name="finish" value="finish" class="btn btn-default">Terminez</button>
-                    </form>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <p >Ajoutez cette question et </p>
+                            </div>
+                            <div class="col-lg-4">
+                                <button type="submit" name="add" value="add" class="btn btn-primary">
+                                    Ajouter une autre question
+                                </button>
+                            </div>
+                            <div class="col-lg-4">
+                                <button type="submit" name="finish" value="finish" class="btn btn-primary">
+                                    Terminez ce quiz
+                                </button>
+                            </div>
+                        </div>
+                        </form>
                 </div>
             </div>
         </div>

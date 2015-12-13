@@ -8,13 +8,15 @@
                     <h3 class="panel-title">Gestion du profil</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="row text-center">
-                        <div class="col-lg-12 col-sm-12">
-                            <a href="{{ path('edituser', {id: user.userId}) }}" type="button" class="btn btn-primary">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <a href="{{ path('edituser', {id: user.userId}) }}" type="button" class="btn btn-primary btn-block">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modifier mon mot de
                                 passe
                             </a>
-                            <a href="{{ path('deleteuser', {id: user.userId}) }}" class="btn btn-danger"
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <a href="{{ path('deleteuser', {id: user.userId}) }}" class="btn btn-danger btn-block"
                                title="Attention, cliquer sur ce bouton est irréversible">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer mon profil
                             </a>

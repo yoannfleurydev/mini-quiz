@@ -2,45 +2,49 @@
 
 {% block content %}
     <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ quiz.quiztitle }}</h3>
-            </div>
-            <div class="panel-body">
-                {{ quiz.quizdescription }}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ quiz.quiztitle }}</h3>
+                </div>
+                <div class="panel-body">
+                    {{ quiz.quizdescription }}
+                </div>
             </div>
         </div>
     </div>
     {% if question is defined %}
         <div class="row">
-            {% if app.session.get("connected") %}
-            <form method="POST" action="{{ path('online/answerQuiz', {'id' : quiz.quizId}) }}">
-            {% else %}
-                <form method="POST" action="{{ path('offline/answerQuiz', {'id' : quiz.quizId}) }}">
-            {% endif %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"> {{ question.QuestionText }} </h3>
-                    </div>
-                    {% if question.answers is defined %}
-                        <div class="panel-body">
-                            {% for answer in question.answers %}
-                                <div class="col-lg-6 col-sm-6">
-                                    <label for="{{ answer.answerId }}">{{ answer.answercontent | raw }}</label>
-                                    <input name="answer" id="{{ answer.answerId }}" value="{{ answer.answerId }}"
-                                           type="radio">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {% if app.session.get("connected") %}
+                <form method="POST" action="{{ path('online/answerQuiz', {'id' : quiz.quizId}) }}">
+                    {% else %}
+                    <form method="POST" action="{{ path('offline/answerQuiz', {'id' : quiz.quizId}) }}">
+                        {% endif %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"> {{ question.QuestionText }} </h3>
+                            </div>
+                            {% if question.answers is defined %}
+                                <div class="panel-body">
+                                    {% for answer in question.answers %}
+                                        <div class="col-lg-6 col-sm-6">
+                                            <label for="{{ answer.answerId }}">{{ answer.answercontent | raw }}</label>
+                                            <input name="answer" id="{{ answer.answerId }}"
+                                                   value="{{ answer.answerId }}"
+                                                   type="radio">
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                            {% endfor %}
+                            {% endif %}
                         </div>
-                    {% endif %}
-                </div>
-                <input type="submit" name="next" value="suivant" class="btn btn-default">
-            </form>
+                        <input type="submit" name="next" value="Suivant" class="btn btn-block btn-default">
+                    </form>
+            </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <p>
-
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                          aria-valuemax="100" style="width: {{ progress }}%;">

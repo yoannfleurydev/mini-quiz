@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-lg-offset-2 col-sm-8 col-xs-12">
+        <div class="col-lg-offset-2 col-md-offset-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Créer un quizz</h3>
@@ -18,8 +18,10 @@
                             <textarea class="form-control" id="quiz_description" name="quiz_description"
                                       rows="10"></textarea>
                         </div>
-                        <div class="card-action">
-                            <button type="submit" class="btn btn-default">Suivant</button>
+                        <div class="row">
+                            <div class="col-lg-offset-8 col-lg-4 col-md-offset-8 col-md-4 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-primary btn-block">Suivant</button>
+                            </div>
                         </div>
                     </form>
                 </div>
