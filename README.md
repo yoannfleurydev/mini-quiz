@@ -24,7 +24,9 @@ You should now see the `install.php` **file** into the root of your server.
 
         ~$ php install.php
 
-4. Enjoy Miniquiz!
+4. Change the `require` line in `index.php` from  `require __DIR__ . '/../app/config/dev.php';` to `require __DIR__ . '/../app/config/prod.php';`
+
+5. That's it! Enjoy Miniquiz!
 
 ## LICENCE
 
