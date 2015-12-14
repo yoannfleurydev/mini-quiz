@@ -53,7 +53,7 @@ $mysqlCommand = 'mysql'
     . ' --user=' . $dbuser
     . ' --password=' . $dbpass
     . ' --database=' . $dbname
-    . ' --execute="SOURCE ' . $mysqlScriptPath
+    . ' --execute="SOURCE ' . $mysqlScriptPath . ';"';
 ;
 
 $output = shell_exec($mysqlCommand);
@@ -103,4 +103,13 @@ function printMessage($message) {
     fprintf(STDOUT, "\n**********************************************************\n");
     fprintf(STDOUT, strtoupper($message) . "\n");
     fprintf(STDOUT, "**********************************************************\n\n");
+}
+
+function readline($prompt = null){
+    if($prompt){
+        echo $prompt;
+    }
+    $fp = fopen("php://stdin","r");
+    $line = rtrim(fgets($fp, 1024));
+    return $line;
 }
