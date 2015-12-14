@@ -9,6 +9,7 @@ Just give it a try.
 * `curl` installed on your system.
 * Apache >= 2.4
 * PHP >=5.4 on your web server **and** in your `PATH`. The following extensions are required :
+	* `php5-cli`
     * `php5-curl`
     * `php5-json`
 * MySQL >= 5.6 to run your database. `mysql` command **should be** in your `PATH`.
