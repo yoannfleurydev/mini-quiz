@@ -23,7 +23,7 @@
                         {% endif %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"> {{ question.QuestionText }} </h3>
+                                <h3 class="panel-title"> {{ question.QuestionText | raw }} </h3>
                             </div>
                             {% if question.answers is defined %}
                                 <div class="panel-body">

@@ -51,7 +51,7 @@ class QuestionDAO extends DAO {
     protected function buildDomainObject($row) {
         $question = new Question();
         $question->setQuestionId($row['question_id']);
-        $question->setQuestionText($row['question_text']);
+        $question->setQuestionText(\Parsedown::instance()->setMarkupEscaped(true)->text($row['question_text']));
         $question->setQuestionGoodAnswer($row['question_good_answer']);
 
         return $question;
