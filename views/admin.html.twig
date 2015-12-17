@@ -3,57 +3,77 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <h3>Utilisateurs</h3>
             {% if users is defined %}
-                <ul class="list-group">
+                <h3>Utilisateurs</h3>
+                <table class="table table-hover table-condensed">
+                    <caption>Liste des utilisateurs</caption>
+                    <thead>
+                    <tr>
+                        <th>Identifiant</th>
+                        <th class="text-center">Modifier</th>
+                        <th class="text-center">Supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for user in users %}
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-lg-9 col-md-9 col-sm12 col-xs-12">
-                                    {{ user.userLogin }}
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    <a href="{{ path('edituser', {id: user.userId}) }}" class="btn btn-primary"
-                                       title="Modifier l'utilisateur" role="button">
-                                        <span class="glyphicon glyphicon-cog"></span>
-                                    </a>
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    <a href="{{ path('deleteuser', {id: user.userId}) }}" class="btn btn-danger"
-                                       title="Supprimer l'utilisateur" role="button">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
+                        <tr>
+                            <td>
+                                {{ user.userLogin }}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ path('edituser', {id: user.userId}) }}" class="btn btn-primary"
+                                   title="Modifier l'utilisateur" role="button">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ path('deleteuser', {id: user.userId}) }}" class="btn btn-danger"
+                                   title="Supprimer l'utilisateur" role="button">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
+                    </tbody>
+                </table>
             {% else %}
                 <p>
                     Aucun utilisateur n'a été trouvé dans la base de données.
                 </p>
             {% endif %}
         </div>
+
         <div class="col-lg-6 col-md-6 col-sm-12">
             <h3>Quiz</h3>
             {% if quizzes is defined %}
-                <ul class="list-group">
+                <table class="table table-hover table-condensed">
+                    <caption>Liste des utilisateurs</caption>
+                    <thead>
+                    <tr>
+                        <th>Identifiant</th>
+                        <th>Nom</th>
+                        <th class="text-center">Supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for quiz in quizzes %}
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-lg-9 col-md-9 col-sm12 col-xs-12">
-                                    {{ quiz.quizId }} - {{ quiz.quizTitle }}
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    <a href="{{ path('deletequiz', {id: quiz.quizId}) }}" class="btn btn-danger"
-                                       title="Supprimer le Quiz" role="button">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
+                        <tr>
+                            <td>
+                                {{ quiz.quizId }}
+                            </td>
+                            <td class="">
+                                {{ quiz.quizTitle }}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ path('deletequiz', {id: quiz.quizId}) }}" class="btn btn-danger"
+                                   title="Supprimer le Quiz" role="button">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
+                    </tbody>
+                </table>
             {% else %}
                 <p>
                     Aucun quiz n'a été trouvé dans la base de données.
