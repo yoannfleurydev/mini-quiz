@@ -26,7 +26,7 @@
                         <tbody>
                         {% for question in questions %}
                             <tr>
-                                <td>{{ question.questionText }}</td>
+                                <td>{{ question.questionText | raw }}</td>
                                 <td class="text-center">{{ tabGoodAnswer[question.questionId] }}</td>
                                 <td class="text-center">{{ tabNbAnswer[question.questionId] }}</td>
                             </tr>
