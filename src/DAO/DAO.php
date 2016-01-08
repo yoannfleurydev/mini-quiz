@@ -4,6 +4,11 @@ namespace Miniquiz\DAO;
 
 use Doctrine\DBAL\Connection;
 
+/**
+ * La classe DAO permet de définir un Data Access Object
+ * neutre qui permettra aux sous classes d'être identique dans
+ * leur conception.
+ */
 abstract class DAO {
     /**
      * Connexion à la base de données.
